@@ -15,6 +15,20 @@ Be on the bleeding edge with Compressor Edge. Compressor Edge includes features 
 > [!IMPORTANT]
 > Development of Compressor Edge has no fixed schedule, and Compressor Edge takes priority over Compressor Edge.
 
+> [!TIP]
+> Looking for something more user friendly? Try the original Compressor app [here](https://github.com/JoshAtticus/Compressor)
+
+---
+
+## Features
+Compressor Edge contains the following features not found in Compressor:
+
+- Audio Encoding Selection
+- Background Compression (with Live Activities & Screen-off support on Android 16+)
+- Enable All Codecs option in Settings
+
+There's more to come soon, Compressor Edge is always improving.
+
 ---
 
 Do you like Compressor Edge? Consider supporting development by [buying me a coffee](https://www.buymeacoffee.com/joshatticus) ☕️
@@ -46,4 +60,4 @@ I would like to acknowledge that Compressor Edge has used AI language models to 
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/chart?repos=JoshAtticus/Compressor Edge&type=date&legend=top-left&sealed_token=sNTeAN-m_zFqDfeGZd5lJAfsf4y3KjmvJR7uXX32il2bO6AFPFeqr7UiNveSw0YOrLwlol6zew0GOlZa21PNAzzf3XQLOhQCyoxJ3prS4EAmbhp3MOq_yg)](https://www.star-history.com/?type=date&repos=JoshAtticus%2FCompressor)
+[![Star History Chart](https://api.star-history.com/chart?repos=JoshAtticus/CompressorEdge&type=date&legend=top-left&sealed_token=sNTeAN-m_zFqDfeGZd5lJAfsf4y3KjmvJR7uXX32il2bO6AFPFeqr7UiNveSw0YOrLwlol6zew0GOlZa21PNAzzf3XQLOhQCyoxJ3prS4EAmbhp3MOq_yg)](https://www.star-history.com/?type=date&repos=JoshAtticus%2FCompressorEdge)
