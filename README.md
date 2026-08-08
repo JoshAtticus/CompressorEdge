@@ -3,7 +3,7 @@
 
 # Compressor Edge
 
-Be on the bleeding edge with Compressor Edge. Compressor Edge includes features & fixes that are not included in Compressor Edge. 
+Be on the bleeding edge with Compressor Edge. Compressor Edge includes features & fixes that are not included in Compressor. 
 
 <br>
 
