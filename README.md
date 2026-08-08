@@ -13,7 +13,7 @@ Be on the bleeding edge with Compressor Edge. Compressor Edge includes features 
 </div>
 
 > [!IMPORTANT]
-> Development of Compressor Edge has no fixed schedule, and Compressor Edge takes priority over Compressor Edge.
+> Development of Compressor Edge has no fixed schedule, and Compressor takes priority over Compressor Edge.
 
 > [!TIP]
 > Looking for something more user friendly? Try the original Compressor app [here](https://github.com/JoshAtticus/Compressor)
