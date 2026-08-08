@@ -1,8 +1,10 @@
 package compressedge.joshattic.us.ui
 
 import compressedge.joshattic.us.ui.components.WhatsNewDialog
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.BackEventCompat
@@ -29,11 +31,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -160,6 +164,40 @@ fun CompressorApp(viewModel: CompressorViewModel) {
             viewModel.setCustomOutputFolder(context, uri)
         }
     }
+
+    var showBackgroundCompressionDialog by remember { mutableStateOf(false) }
+    val notificationPermissionDeniedMessage = stringResource(R.string.notification_bg_permission_denied)
+
+    val requestNotificationPermission = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (!granted) {
+            Toast.makeText(
+                context,
+                notificationPermissionDeniedMessage,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        viewModel.startBackgroundCompression(context)
+    }
+
+    fun startBackgroundCompressionWithPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            viewModel.startBackgroundCompression(context)
+        }
+    }
+
+    fun startCompressionFlow() {
+        if (!state.backgroundCompressionPrompted) {
+            showBackgroundCompressionDialog = true
+        } else if (state.backgroundCompressionEnabled) {
+            startBackgroundCompressionWithPermission()
+        } else {
+            viewModel.startCompression(context)
+        }
+    }
     
     fun shareVideo(uri: Uri?) {
         if (uri == null) return
@@ -248,6 +286,7 @@ fun CompressorApp(viewModel: CompressorViewModel) {
                                 state = state,
                                 onBack = { currentSettingsDestination = SettingsDestination.MAIN },
                                 onToggleAutoSaveToPhotos = { viewModel.toggleAutoSaveToPhotos() },
+                                onToggleBackgroundCompression = { viewModel.toggleBackgroundCompression() },
                                 onChangeOutputLocation = {
                                     val initial = state.customOutputTreeUri?.let { Uri.parse(it) }
                                     openDocumentTreeLauncher.launch(initial)
@@ -380,7 +419,12 @@ fun CompressorApp(viewModel: CompressorViewModel) {
                                             )
                                         }
                                     }
-                                    else -> ConfigScreen(state, viewModel, context)
+                                    else -> ConfigScreen(
+                                        state = state,
+                                        viewModel = viewModel,
+                                        context = context,
+                                        onStartCompression = { startCompressionFlow() }
+                                    )
                                 }
                             }
                         }
@@ -394,6 +438,35 @@ fun CompressorApp(viewModel: CompressorViewModel) {
         WhatsNewDialog(
             versionName = state.appInfoVersion,
             onDismiss = { viewModel.dismissWhatsNewDialog() }
+        )
+    }
+
+    if (showBackgroundCompressionDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showBackgroundCompressionDialog = false
+                viewModel.setBackgroundCompressionEnabled(false)
+            },
+            title = { Text(stringResource(R.string.bg_compression_dialog_title)) },
+            text = { Text(stringResource(R.string.bg_compression_dialog_message)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    showBackgroundCompressionDialog = false
+                    viewModel.setBackgroundCompressionEnabled(true)
+                    startBackgroundCompressionWithPermission()
+                }) {
+                    Text(stringResource(R.string.bg_compression_enable))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showBackgroundCompressionDialog = false
+                    viewModel.setBackgroundCompressionEnabled(false)
+                    viewModel.startCompression(context)
+                }) {
+                    Text(stringResource(R.string.bg_compression_not_now))
+                }
+            }
         )
     }
 }

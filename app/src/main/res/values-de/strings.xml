@@ -42,6 +42,20 @@
     <string name="compressing_video_label">KOMPRIMIERE VIDEO</string>
     <string name="cancel">Stornieren</string>
 
+    <!-- Background Compression -->
+    <string name="background_compression_title">Hintergrundkomprimierung</string>
+    <string name="background_compression_subtitle">Komprimierung fortsetzen, wenn Sie die App verlassen (experimentell)</string>
+    <string name="bg_compression_dialog_title">Hintergrundkomprimierung aktivieren?</string>
+    <string name="bg_compression_dialog_message">Die Komprimierung wird fortgesetzt, auch wenn Sie die App verlassen. Diese Funktion ist experimentell, funktioniert möglicherweise nicht auf allen Geräten und erfordert Berechtigungen für Benachrichtigungen und Hintergrunddienste.</string>
+    <string name="bg_compression_enable">Aktivieren</string>
+    <string name="bg_compression_not_now">Jetzt nicht</string>
+    <string name="notification_channel_name">Hintergrundkomprimierung</string>
+    <string name="notification_bg_title">Video wird komprimiert</string>
+    <string name="notification_bg_starting">Startet…</string>
+    <string name="notification_bg_done">Fertig</string>
+    <string name="notification_bg_failed">Komprimierung fehlgeschlagen</string>
+    <string name="notification_bg_permission_denied">Berechtigung für Benachrichtigungen verweigert. Hintergrundkomprimierung wird ohne Benachrichtigungen fortgesetzt.</string>
+
     <!-- Errors -->
     <string name="error_file_lost">Datei verloren</string>
     <string name="error_export_failed">Export fehlgeschlagen: %1$s</string>

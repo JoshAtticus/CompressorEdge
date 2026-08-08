@@ -76,6 +76,20 @@
     <string name="compressing_video_label">正在壓縮影片</string>
     <string name="cancel">取消</string>
 
+    <!-- Background Compression -->
+    <string name="background_compression_title">背景壓縮</string>
+    <string name="background_compression_subtitle">離開應用程式時繼續壓縮（實驗性）</string>
+    <string name="bg_compression_dialog_title">開啟背景壓縮？</string>
+    <string name="bg_compression_dialog_message">即使離開應用程式，壓縮也會繼續。此功能處於實驗階段，可能無法在所有裝置上運行，且需要通知和背景服務權限。</string>
+    <string name="bg_compression_enable">開啟</string>
+    <string name="bg_compression_not_now">暫不</string>
+    <string name="notification_channel_name">背景壓縮</string>
+    <string name="notification_bg_title">正在壓縮影片</string>
+    <string name="notification_bg_starting">正在啟動…</string>
+    <string name="notification_bg_done">完成</string>
+    <string name="notification_bg_failed">壓縮失敗</string>
+    <string name="notification_bg_permission_denied">通知權限被拒絕。背景壓縮將在沒有通知的情況下繼續。</string>
+
     <string name="error_file_lost">檔案遺失</string>
     <string name="error_export_failed">匯出失敗：%1$s</string>
     <string name="error_save_failed">儲存失敗：%1$s</string>

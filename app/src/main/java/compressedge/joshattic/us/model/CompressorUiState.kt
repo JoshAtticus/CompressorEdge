@@ -36,6 +36,7 @@ data class CompressorUiState(
     val originalName: String? = null,
     
     val isCompressing: Boolean = false,
+    val isBackgroundCompression: Boolean = false,
     val progress: Float = 0f,
     val compressedUri: Uri? = null,
     val compressedSize: Long = 0L,
@@ -67,6 +68,8 @@ data class CompressorUiState(
     val showTargetSizePreset: Boolean = true,
     /** Only meaningful on Android 10+; forced off on older versions. */
     val autoSaveToPhotos: Boolean = false,
+    val backgroundCompressionEnabled: Boolean = false,
+    val backgroundCompressionPrompted: Boolean = false,
     val customOutputTreeUri: String? = null,
     val customOutputFolderName: String? = null,
     val hasShared: Boolean = false,

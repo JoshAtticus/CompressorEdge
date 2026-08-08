@@ -74,6 +74,20 @@
     <string name="compressing_video_label">جاري ضغط الفيديو</string>
     <string name="cancel">إلغاء</string>
 
+    <!-- Background Compression -->
+    <string name="background_compression_title">ضغط في الخلفية</string>
+    <string name="background_compression_subtitle">استمر في الضغط عند مغادرة التطبيق (تجريبي)</string>
+    <string name="bg_compression_dialog_title">تمكين الضغط في الخلفية؟</string>
+    <string name="bg_compression_dialog_message">يستمر الضغط حتى لو غادرت التطبيق. هذه الميزة تجريبية، وقد لا تعمل على جميع الأجهزة، وتتطلب أذونات الإشعارات والخدمة في الخلفية.</string>
+    <string name="bg_compression_enable">تمكين</string>
+    <string name="bg_compression_not_now">ليس الآن</string>
+    <string name="notification_channel_name">الضغط في الخلفية</string>
+    <string name="notification_bg_title">جاري ضغط الفيديو</string>
+    <string name="notification_bg_starting">جاري البدء…</string>
+    <string name="notification_bg_done">اكتمل</string>
+    <string name="notification_bg_failed">فشل الضغط</string>
+    <string name="notification_bg_permission_denied">تم رفض إذن الإشعارات. يستمر الضغط في الخلفية بدون إشعارات.</string>
+
     <string name="error_file_lost">ملف مفقود</string>
     <string name="error_export_failed">فشل التصدير: %1$s</string>
     <string name="error_save_failed">فشل الحفظ: %1$s</string>

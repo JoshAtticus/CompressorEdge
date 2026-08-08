@@ -62,7 +62,8 @@ import kotlinx.coroutines.launch
 fun ConfigScreen(
     state: CompressorUiState,
     viewModel: CompressorViewModel,
-    context: Context
+    context: Context,
+    onStartCompression: () -> Unit = { viewModel.startCompression(context) }
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val scope = rememberCoroutineScope()
@@ -183,7 +184,7 @@ fun ConfigScreen(
                              Button(
                                 onClick = { 
                                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                                    viewModel.startCompression(context) 
+                                    onStartCompression()
                                 },
                                 enabled = !isLarger,
                                 interactionSource = interactionSource,
@@ -315,7 +316,7 @@ fun ConfigScreen(
                          Button(
                             onClick = { 
                                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                                viewModel.startCompression(context) 
+                                onStartCompression()
                             },
                             enabled = !isLarger,
                             interactionSource = interactionSource,

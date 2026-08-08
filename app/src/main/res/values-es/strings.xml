@@ -38,6 +38,21 @@
     <string name="compression_complete">¡Compresión completada!</string>
     <string name="compressing_video_label">COMPRIMIENDO VIDEO</string>
     <string name="cancel">Cancelar</string>
+
+    <!-- Background Compression -->
+    <string name="background_compression_title">Compresión en segundo plano</string>
+    <string name="background_compression_subtitle">Seguir comprimiendo al salir de la aplicación (experimental)</string>
+    <string name="bg_compression_dialog_title">¿Activar compresión en segundo plano?</string>
+    <string name="bg_compression_dialog_message">La compresión continúa incluso si sales de la aplicación. Esta función es experimental, puede que no funcione en todos los dispositivos y requiere permisos de notificaciones y servicios en segundo plano.</string>
+    <string name="bg_compression_enable">Activar</string>
+    <string name="bg_compression_not_now">Ahora no</string>
+    <string name="notification_channel_name">Compresión en segundo plano</string>
+    <string name="notification_bg_title">Comprimiendo video</string>
+    <string name="notification_bg_starting">Iniciando…</string>
+    <string name="notification_bg_done">Listo</string>
+    <string name="notification_bg_failed">Falló la compresión</string>
+    <string name="notification_bg_permission_denied">Permiso de notificaciones denegado. La compresión en segundo plano continúa sin notificaciones.</string>
+
     <string name="error_file_lost">Archivo perdido</string>
     <string name="error_export_failed">Error de exportación: %1$s</string>
     <string name="error_save_failed">Error al guardar: %1$s</string>

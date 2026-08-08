@@ -76,6 +76,20 @@
     <string name="compression_complete">Compression Complete!</string>
     <string name="compressing_video_label">COMPRESSING VIDEO</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Background Compression -->
+    <string name="background_compression_title">Background Compression</string>
+    <string name="background_compression_subtitle">Keep compressing when you leave the app (experimental)</string>
+    <string name="bg_compression_dialog_title">Enable Background Compression?</string>
+    <string name="bg_compression_dialog_message">Compression continues even if you leave the app. This feature is experimental, might not work on all devices, and requires notification and background service permissions.</string>
+    <string name="bg_compression_enable">Enable</string>
+    <string name="bg_compression_not_now">Not now</string>
+    <string name="notification_channel_name">Background compression</string>
+    <string name="notification_bg_title">Compressing video</string>
+    <string name="notification_bg_starting">Starting…</string>
+    <string name="notification_bg_done">Done</string>
+    <string name="notification_bg_failed">Compression failed</string>
+    <string name="notification_bg_permission_denied">Notifications permission denied. Background compression continues without notifications.</string>
     
     <!-- Errors -->
     <string name="error_file_lost">File lost</string>

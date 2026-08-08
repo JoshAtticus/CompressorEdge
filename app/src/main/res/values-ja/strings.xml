@@ -74,6 +74,20 @@
     <string name="compressing_video_label">動画を圧縮中</string>
     <string name="cancel">キャンセル</string>
 
+    <!-- Background Compression -->
+    <string name="background_compression_title">バックグラウンド圧縮</string>
+    <string name="background_compression_subtitle">アプリを離れても圧縮を継続する（実験的）</string>
+    <string name="bg_compression_dialog_title">バックグラウンド圧縮を有効にしますか？</string>
+    <string name="bg_compression_dialog_message">アプリを離れても圧縮が継続されます。この機能は実験的であり、すべての端末で動作するとは限りません。また、通知とバックグラウンドサービスの権限が必要です。</string>
+    <string name="bg_compression_enable">有効にする</string>
+    <string name="bg_compression_not_now">後で</string>
+    <string name="notification_channel_name">バックグラウンド圧縮</string>
+    <string name="notification_bg_title">動画を圧縮中</string>
+    <string name="notification_bg_starting">開始中…</string>
+    <string name="notification_bg_done">完了</string>
+    <string name="notification_bg_failed">圧縮に失敗しました</string>
+    <string name="notification_bg_permission_denied">通知の権限が拒否されました。バックグラウンド圧縮は通知なしで継続されます。</string>
+
     <string name="error_file_lost">ファイルが見つかりません</string>
     <string name="error_export_failed">エクスポート失敗: %1$s</string>
     <string name="error_save_failed">保存に失敗しました: %1$s</string>

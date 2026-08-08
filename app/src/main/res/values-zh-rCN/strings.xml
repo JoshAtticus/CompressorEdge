@@ -76,6 +76,20 @@
     <string name="compressing_video_label">正在压缩视频</string>
     <string name="cancel">取消</string>
 
+    <!-- Background Compression -->
+    <string name="background_compression_title">后台压缩</string>
+    <string name="background_compression_subtitle">离开应用时继续压缩（实验性）</string>
+    <string name="bg_compression_dialog_title">开启后台压缩？</string>
+    <string name="bg_compression_dialog_message">即使离开应用，压缩也会继续。此功能处于实验阶段，可能无法在所有设备上运行，且需要通知和后台服务权限。</string>
+    <string name="bg_compression_enable">开启</string>
+    <string name="bg_compression_not_now">暂不</string>
+    <string name="notification_channel_name">后台压缩</string>
+    <string name="notification_bg_title">正在压缩视频</string>
+    <string name="notification_bg_starting">正在启动…</string>
+    <string name="notification_bg_done">完成</string>
+    <string name="notification_bg_failed">压缩失败</string>
+    <string name="notification_bg_permission_denied">通知权限被拒绝。后台压缩将在没有通知的情况下继续。</string>
+
     <string name="error_file_lost">文件丢失</string>
     <string name="error_export_failed">导出失败：%1$s</string>
     <string name="error_save_failed">保存失败：%1$s</string>

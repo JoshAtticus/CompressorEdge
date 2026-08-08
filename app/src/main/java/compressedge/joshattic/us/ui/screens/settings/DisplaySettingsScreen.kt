@@ -93,6 +93,7 @@ fun DisplaySettingsScreen(
     state: CompressorUiState,
     onBack: () -> Unit,
     onToggleAutoSaveToPhotos: () -> Unit,
+    onToggleBackgroundCompression: () -> Unit,
     onChangeOutputLocation: () -> Unit,
     onResetOutputLocation: () -> Unit,
     onToggleShowBitrate: () -> Unit,
@@ -222,6 +223,47 @@ fun DisplaySettingsScreen(
                                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
                             )
                         }
+
+                        // Background compression
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    haptics.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                                    onToggleBackgroundCompression()
+                                }
+                                .padding(horizontal = 20.dp, vertical = 18.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(R.string.background_compression_title),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(
+                                    text = stringResource(R.string.background_compression_subtitle),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Switch(
+                                checked = state.backgroundCompressionEnabled,
+                                onCheckedChange = {
+                                    haptics.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                                    onToggleBackgroundCompression()
+                                }
+                            )
+                        }
+
+                        HorizontalDivider(
+                            modifier = Modifier.padding(horizontal = 20.dp),
+                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+                        )
 
                         // Save location
                         val hasCustomLocation = !state.customOutputTreeUri.isNullOrBlank()
