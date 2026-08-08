@@ -44,6 +44,9 @@
     <string name="resolution">Разрешение</string>
     <string name="audio_options">Настройки звука</string>
     <string name="audio_bitrate">Битрейт звука</string>
+    <string name="audio_encoding">Кодирование аудио</string>
+    <string name="audio_codec_aac">AAC (Совместимо)</string>
+    <string name="audio_codec_opus">Opus (Эффективно)</string>
     <string name="volume">Громкость</string>
     <string name="remove_audio">Удалить звук</string>
     <string name="framerate">Частота кадров</string>
@@ -252,6 +255,8 @@
     <string name="default_resolution">Разрешение по умолчанию</string>
     <string name="default_framerate">Частота кадров по умолчанию</string>
     <string name="default_size_ratio">Коэффициент целевого размера по умолчанию</string>
+    <string name="default_audio_codec">Аудиокодек по умолчанию</string>
+    <string name="default_audio_codec_desc">Выберите аудиокодер по умолчанию для новых сжатий</string>
     <string name="default_audio_bitrate">Битрейт аудио по умолчанию</string>
     <string name="default_mute_audio">Без звука по умолчанию</string>
     <string name="default_mute_audio_desc">Автоматически удалять аудиодорожки из новых видео</string>

@@ -85,6 +85,37 @@ fun AudioOptionsTab(state: CompressorUiState, viewModel: CompressorViewModel) {
         AnimatedVisibility(visible = !state.removeAudio) {
             Column(modifier = Modifier.padding(top = 16.dp)) {
                  Text(
+                    stringResource(R.string.audio_encoding),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Bold
+                 )
+
+                 Row(
+                     modifier = Modifier
+                        .horizontalScroll(rememberScrollState())
+                        .padding(top = 8.dp),
+                     horizontalArrangement = Arrangement.spacedBy(8.dp)
+                 ) {
+                     state.supportedAudioCodecs.forEach { codec ->
+                         val labelText = when (codec) {
+                             androidx.media3.common.MimeTypes.AUDIO_OPUS ->
+                                 stringResource(R.string.audio_codec_opus)
+                             else -> stringResource(R.string.audio_codec_aac)
+                         }
+                         compressedge.joshattic.us.ui.components.SelectionChip(
+                             selected = state.audioCodec == codec,
+                             onClick = {
+                                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                 viewModel.setAudioCodec(codec)
+                             },
+                             label = labelText
+                         )
+                     }
+                 }
+
+                 Spacer(modifier = Modifier.height(24.dp))
+
+                 Text(
                     stringResource(R.string.audio_bitrate),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Bold

@@ -44,7 +44,10 @@
 
     <string name="resolution">Resolution</string>
     <string name="audio_options">Audio Options</string>
+    <string name="audio_encoding">Audio Encoding</string>
     <string name="audio_bitrate">Audio Bitrate</string>
+    <string name="audio_codec_aac">AAC (Compat)</string>
+    <string name="audio_codec_opus">Opus (Efficient)</string>
     <string name="volume">Volume</string>
     <string name="remove_audio">Remove Audio</string>
     <string name="framerate">Framerate</string>
@@ -255,6 +258,8 @@
     <string name="default_resolution">Default Resolution</string>
     <string name="default_framerate">Default Framerate</string>
     <string name="default_size_ratio">Default Target Size Ratio</string>
+    <string name="default_audio_codec">Default Audio Codec</string>
+    <string name="default_audio_codec_desc">Select the default audio encoder for new compressions</string>
     <string name="default_audio_bitrate">Default Audio Bitrate</string>
     <string name="default_mute_audio">Mute Audio by Default</string>
     <string name="default_mute_audio_desc">Automatically strip audio tracks from new videos</string>

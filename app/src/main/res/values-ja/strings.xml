@@ -42,6 +42,9 @@
     <string name="resolution">解像度</string>
     <string name="audio_options">音声設定</string>
     <string name="audio_bitrate">音声ビットレート</string>
+    <string name="audio_encoding">音声エンコード</string>
+    <string name="audio_codec_aac">AAC (互換性重視)</string>
+    <string name="audio_codec_opus">Opus (高効率)</string>
     <string name="volume">音量</string>
     <string name="remove_audio">声を削除</string>
     <string name="framerate">フレームレート</string>
@@ -250,6 +253,8 @@
     <string name="default_resolution">デフォルト解像度</string>
     <string name="default_framerate">デフォルトフレームレート</string>
     <string name="default_size_ratio">デフォルト目標サイズ比率</string>
+    <string name="default_audio_codec">デフォルト音声コーデック</string>
+    <string name="default_audio_codec_desc">新しい圧縮のデフォルト音声エンコーダーを選択</string>
     <string name="default_audio_bitrate">デフォルト音声ビットレート</string>
     <string name="default_mute_audio">デフォルトで音声をミュート</string>
     <string name="default_mute_audio_desc">新規動画から音声トラックを自動的に削除</string>

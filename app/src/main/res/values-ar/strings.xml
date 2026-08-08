@@ -42,6 +42,9 @@
     <string name="resolution">الدقة</string>
     <string name="audio_options">خيارات الصوت</string>
     <string name="audio_bitrate">معدل بت الصوت</string>
+    <string name="audio_encoding">ترميز الصوت</string>
+    <string name="audio_codec_aac">AAC (متوافق)</string>
+    <string name="audio_codec_opus">Opus (كفاءة عالية)</string>
     <string name="volume">مستوى الصوت</string>
     <string name="remove_audio">إزالة الصوت</string>
     <string name="framerate">معدل الإطارات</string>
@@ -250,6 +253,8 @@
     <string name="default_resolution">الدقة الافتراضية</string>
     <string name="default_framerate">معدل الإطارات الافتراضي</string>
     <string name="default_size_ratio">نسبة الحجم المستهدف الافتراضية</string>
+    <string name="default_audio_codec">ترميز الصوت الافتراضي</string>
+    <string name="default_audio_codec_desc">حدد مُشفّر الصوت الافتراضي لعمليات الضغط الجديدة</string>
     <string name="default_audio_bitrate">معدل نقل بيانات الصوت الافتراضي</string>
     <string name="default_mute_audio">كتم الصوت افتراضياً</string>
     <string name="default_mute_audio_desc">إزالة المقاطع الصوتية تلقائياً من الفيديوهات الجديدة</string>

@@ -72,10 +72,13 @@ fun rememberSearchableSettings(
     val framerate = stringResource(R.string.framerate)
     val resetVideoDefaults = stringResource(R.string.reset_video_defaults)
 
+    val defaultAudioCodec = stringResource(R.string.default_audio_codec)
+    val defaultAudioCodecDesc = stringResource(R.string.default_audio_codec_desc)
     val defaultAudioBitrate = stringResource(R.string.default_audio_bitrate)
     val defaultMuteAudio = stringResource(R.string.default_mute_audio)
     val defaultMuteAudioDesc = stringResource(R.string.default_mute_audio_desc)
     val defaultAudioVolume = stringResource(R.string.default_audio_volume)
+    val audioEncoding = stringResource(R.string.audio_encoding)
     val audioBitrate = stringResource(R.string.audio_bitrate)
     val volume = stringResource(R.string.volume)
     val audioOptions = stringResource(R.string.audio_options)
@@ -160,9 +163,11 @@ fun rememberSearchableSettings(
         settings.add(SearchableSetting(resetVideoDefaults, categoryVideoSubtitle, videoTitle, "video", Icons.Default.Movie, onNavigateToVideo))
 
         // 4. Audio
+        settings.add(SearchableSetting(defaultAudioCodec, defaultAudioCodecDesc, audioTitle, "audio", Icons.Default.MusicNote, onNavigateToAudio))
         settings.add(SearchableSetting(defaultAudioBitrate, "320k, 256k, 192k, 128k, 96k", audioTitle, "audio", Icons.Default.MusicNote, onNavigateToAudio))
         settings.add(SearchableSetting(defaultMuteAudio, defaultMuteAudioDesc, audioTitle, "audio", Icons.Default.MusicNote, onNavigateToAudio))
         settings.add(SearchableSetting(defaultAudioVolume, categoryAudioSubtitle, audioTitle, "audio", Icons.Default.MusicNote, onNavigateToAudio))
+        settings.add(SearchableSetting(audioEncoding, "AAC, Opus", audioTitle, "audio", Icons.Default.MusicNote, onNavigateToAudio))
         settings.add(SearchableSetting(audioBitrate, "320k, 256k, 192k, 128k, 96k, 64k", audioTitle, "audio", Icons.Default.MusicNote, onNavigateToAudio))
         settings.add(SearchableSetting(volume, audioOptions, audioTitle, "audio", Icons.Default.MusicNote, onNavigateToAudio))
         settings.add(SearchableSetting(removeAudio, audioOptions, audioTitle, "audio", Icons.Default.MusicNote, onNavigateToAudio))

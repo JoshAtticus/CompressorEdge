@@ -42,6 +42,9 @@
     <string name="resolution">해상도</string>
     <string name="audio_options">오디오 옵션</string>
     <string name="audio_bitrate">오디오 비트레이트</string>
+    <string name="audio_encoding">오디오 인코딩</string>
+    <string name="audio_codec_aac">AAC (호환성)</string>
+    <string name="audio_codec_opus">Opus (고효율)</string>
     <string name="volume">음량</string>
     <string name="remove_audio">오디오 제거</string>
     <string name="framerate">프레임레이트</string>
@@ -228,6 +231,8 @@
     <string name="default_resolution">기본 해상도</string>
     <string name="default_framerate">기본 프레임 레이트</string>
     <string name="default_size_ratio">기본 목표 크기 비율</string>
+    <string name="default_audio_codec">기본 오디오 코덱</string>
+    <string name="default_audio_codec_desc">새 압축의 기본 오디오 인코더를 선택하세요</string>
     <string name="default_audio_bitrate">기본 오디오 비트레이트</string>
     <string name="default_mute_audio">기본으로 오디오 음소거</string>
     <string name="default_mute_audio_desc">새 비디오에서 자동으로 오디오 트랙 제거</string>

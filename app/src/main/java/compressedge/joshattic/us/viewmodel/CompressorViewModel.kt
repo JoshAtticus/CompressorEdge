@@ -36,6 +36,7 @@ import androidx.media3.transformer.EditedMediaItemSequence
 import androidx.media3.transformer.Effects
 import androidx.media3.transformer.ExportException
 import androidx.media3.transformer.ExportResult
+import androidx.media3.transformer.InAppMuxer
 import androidx.media3.transformer.Transformer
 import androidx.media3.transformer.VideoEncoderSettings
 import compressedge.joshattic.us.BuildConfig
@@ -144,6 +145,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
             showWhatsNewDialog = showWhatsNew
         ) }
         checkSupportedCodecs()
+        checkSupportedAudioCodecs()
         clearCache()
     }
 
@@ -185,6 +187,46 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                 allCodecsEnabled = allCodecsEnabled,
                 allCodecsUnlocked = true
             ) 
+        }
+    }
+
+    internal fun checkSupportedAudioCodecs() {
+        val supported = mutableListOf(MimeTypes.AUDIO_AAC)
+        // Opus is usually software-only; include software encoders for audio.
+        if (hasAnyAudioEncoder(MimeTypes.AUDIO_OPUS)) {
+            supported.add(MimeTypes.AUDIO_OPUS)
+        }
+
+        _uiState.update {
+            var newCodec = it.audioCodec
+            if (!supported.contains(newCodec)) {
+                newCodec = MimeTypes.AUDIO_AAC
+            }
+            var defaultConfig = it.defaultAudioConfig
+            if (!supported.contains(defaultConfig.defaultAudioCodec)) {
+                defaultConfig = defaultConfig.copy(defaultAudioCodec = MimeTypes.AUDIO_AAC)
+            }
+            it.copy(
+                supportedAudioCodecs = supported,
+                audioCodec = newCodec,
+                defaultAudioConfig = defaultConfig
+            )
+        }
+    }
+
+    /** True if any encoder (hardware or software) supports the given audio MIME type. */
+    internal fun hasAnyAudioEncoder(mimeType: String): Boolean {
+        return try {
+            val list = MediaCodecList(MediaCodecList.ALL_CODECS)
+            for (info in list.codecInfos) {
+                if (!info.isEncoder) continue
+                for (type in info.supportedTypes) {
+                    if (type.equals(mimeType, ignoreCase = true)) return true
+                }
+            }
+            false
+        } catch (_: Exception) {
+            false
         }
     }
 
@@ -355,6 +397,12 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                                  else if (current.supportedCodecs.contains(MimeTypes.VIDEO_H265)) MimeTypes.VIDEO_H265
                                  else MimeTypes.VIDEO_H264
 
+            val preferredAudioCodec = if (current.supportedAudioCodecs.contains(audioConfig.defaultAudioCodec)) {
+                audioConfig.defaultAudioCodec
+            } else {
+                MimeTypes.AUDIO_AAC
+            }
+
             val isVertical = height > width
             fun getTargetHeight(targetShortSide: Int): Int {
                 if (width <= 0 || height <= 0) return height
@@ -387,6 +435,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                      videoCodec = preferredCodec,
                      useH265 = preferredCodec == MimeTypes.VIDEO_H265,
                      activePreset = QualityPreset.CUSTOM,
+                     audioCodec = preferredAudioCodec,
                      audioBitrate = audioConfig.defaultAudioBitrate,
                      audioBitrateLocked = false,
                      targetResolutionLocked = false,
@@ -763,6 +812,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
 
     private fun saveDefaultAudioConfig(config: DefaultAudioConfig) {
         val obj = JSONObject().apply {
+            put("defaultAudioCodec", config.defaultAudioCodec)
             put("defaultAudioBitrate", config.defaultAudioBitrate)
             put("defaultRemoveAudio", config.defaultRemoveAudio)
             put("defaultAudioVolume", config.defaultAudioVolume.toDouble())
@@ -775,6 +825,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
         return try {
             val obj = JSONObject(str)
             DefaultAudioConfig(
+                defaultAudioCodec = obj.optString("defaultAudioCodec", MimeTypes.AUDIO_AAC),
                 defaultAudioBitrate = obj.optInt("defaultAudioBitrate", 128_000),
                 defaultRemoveAudio = obj.optBoolean("defaultRemoveAudio", false),
                 defaultAudioVolume = obj.optDouble("defaultAudioVolume", 1.0).toFloat()
@@ -886,6 +937,15 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                 activePreset = QualityPreset.CUSTOM
             )
             temp.autoAdjust(temp.targetSizeMb)
+        }
+    }
+
+    fun setAudioCodec(codec: String) {
+        _uiState.update {
+            it.copy(
+                audioCodec = codec,
+                activePreset = QualityPreset.CUSTOM
+            )
         }
     }
 
@@ -1122,6 +1182,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
         val current = _uiState.value
         val savedBytes = current.totalSavedBytes
         val supportedCodecs = current.supportedCodecs
+        val supportedAudioCodecs = current.supportedAudioCodecs
         val showBitrate = current.showBitrate
         val useMbps = current.useMbps
         
@@ -1129,11 +1190,17 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
 
         val defaultCodec = if (supportedCodecs.contains(MimeTypes.VIDEO_H265)) MimeTypes.VIDEO_H265 else MimeTypes.VIDEO_H264
         val useH265 = defaultCodec == MimeTypes.VIDEO_H265
+        val defaultAudioCodec = if (supportedAudioCodecs.contains(current.defaultAudioConfig.defaultAudioCodec)) {
+            current.defaultAudioConfig.defaultAudioCodec
+        } else {
+            MimeTypes.AUDIO_AAC
+        }
         
         _uiState.update {
             CompressorUiState(
                 totalSavedBytes = savedBytes,
                 supportedCodecs = supportedCodecs,
+                supportedAudioCodecs = supportedAudioCodecs,
                 showBitrate = showBitrate,
                 useMbps = useMbps,
                 showStorageSaved = current.showStorageSaved,
@@ -1150,7 +1217,8 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                 defaultVideoConfig = current.defaultVideoConfig,
                 defaultAudioConfig = current.defaultAudioConfig,
                 videoCodec = defaultCodec,
-                useH265 = useH265
+                useH265 = useH265,
+                audioCodec = defaultAudioCodec
             )
         }
     }
@@ -1263,9 +1331,20 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
             override fun videoNeedsEncoding(): Boolean = primaryEncoderFactory.videoNeedsEncoding()
         }
         
+        val audioMimeType = when (currentState.audioCodec) {
+            MimeTypes.AUDIO_OPUS -> MimeTypes.AUDIO_OPUS
+            else -> MimeTypes.AUDIO_AAC
+        }
+
+        // Framework MediaMuxer only supports AAC/AMR for audio in MP4. Opus needs the in-app muxer.
         val transformerBuilder = Transformer.Builder(context)
             .setVideoMimeType(videoMimeType)
-            .setAudioMimeType(MimeTypes.AUDIO_AAC)
+            .setAudioMimeType(audioMimeType)
+            .apply {
+                if (audioMimeType == MimeTypes.AUDIO_OPUS) {
+                    setMuxerFactory(InAppMuxer.Factory.Builder().build())
+                }
+            }
             .setAssetLoaderFactory(androidx.media3.transformer.DefaultAssetLoaderFactory(context, decoderFactory, androidx.media3.common.util.Clock.DEFAULT))
             .setEncoderFactory(encoderFactory)
             .addListener(object : Transformer.Listener {

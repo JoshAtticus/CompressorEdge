@@ -85,6 +85,9 @@
     <string name="res_quarter">¼</string>
     <string name="audio_options">Opciones de audio</string>
     <string name="audio_bitrate">Tasa de bits de audio</string>
+    <string name="audio_encoding">Codificación de audio</string>
+    <string name="audio_codec_aac">AAC (Compatible)</string>
+    <string name="audio_codec_opus">Opus (Eficiente)</string>
     <string name="volume">Volumen</string>
     <string name="slider_less_space">Menos espacio</string>
     <string name="slider_balanced">Equilibrado</string>
@@ -244,6 +247,8 @@
     <string name="default_resolution">Resolución predeterminada</string>
     <string name="default_framerate">Tasa de fotogramas predeterminada</string>
     <string name="default_size_ratio">Relación de tamaño objetivo predeterminada</string>
+    <string name="default_audio_codec">Códec de audio predeterminado</string>
+    <string name="default_audio_codec_desc">Selecciona el codificador de audio predeterminado para nuevas compresiones</string>
     <string name="default_audio_bitrate">Tasa de bits de audio predeterminada</string>
     <string name="default_mute_audio">Silenciar audio de forma predeterminada</string>
     <string name="default_mute_audio_desc">Eliminar automáticamente las pistas de audio de videos nuevos</string>

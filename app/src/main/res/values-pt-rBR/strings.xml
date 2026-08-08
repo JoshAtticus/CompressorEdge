@@ -42,6 +42,9 @@
     <string name="resolution">Resolução</string>
     <string name="audio_options">Opções de Áudio</string>
     <string name="audio_bitrate">Taxa de Bits de Áudio</string>
+    <string name="audio_encoding">Codificação de Áudio</string>
+    <string name="audio_codec_aac">AAC (Compatível)</string>
+    <string name="audio_codec_opus">Opus (Eficiente)</string>
     <string name="volume">Volume</string>
     <string name="remove_audio">Remover Áudio</string>
     <string name="framerate">Taxa de Quadros</string>
@@ -250,6 +253,8 @@
     <string name="default_resolution">Resolução Padrão</string>
     <string name="default_framerate">Taxa de Quadros Padrão</string>
     <string name="default_size_ratio">Proporção de Tamanho Alvo Padrão</string>
+    <string name="default_audio_codec">Codec de Áudio Padrão</string>
+    <string name="default_audio_codec_desc">Selecione o codificador de áudio padrão para novas compressões</string>
     <string name="default_audio_bitrate">Taxa de Bits de Áudio Padrão</string>
     <string name="default_mute_audio">Silenciar Áudio por Padrão</string>
     <string name="default_mute_audio_desc">Remover automaticamente faixas de áudio de novos vídeos</string>

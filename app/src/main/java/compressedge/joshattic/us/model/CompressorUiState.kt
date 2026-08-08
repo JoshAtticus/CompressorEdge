@@ -71,6 +71,8 @@ data class CompressorUiState(
     val customOutputFolderName: String? = null,
     val hasShared: Boolean = false,
     val removeAudio: Boolean = false,
+    val audioCodec: String = MimeTypes.AUDIO_AAC,
+    val supportedAudioCodecs: List<String> = listOf(MimeTypes.AUDIO_AAC),
     val audioBitrate: Int = 128_000,
     val audioVolume: Float = 1.0f,
     val warnings: List<String> = emptyList(),

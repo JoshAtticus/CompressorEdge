@@ -42,6 +42,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.media3.common.MimeTypes
 import compressedge.joshattic.us.R
 import compressedge.joshattic.us.model.CompressorUiState
 import compressedge.joshattic.us.model.DefaultAudioConfig
@@ -119,6 +120,39 @@ fun AudioSettingsScreen(
                 color = MaterialTheme.colorScheme.surfaceContainer
             ) {
                 Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                    // Default Audio Codec
+                    Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) {
+                        Text(
+                            text = stringResource(R.string.default_audio_codec),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = stringResource(R.string.default_audio_codec_desc),
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        val codecOptions = mutableListOf(
+                            MimeTypes.AUDIO_AAC to stringResource(R.string.audio_codec_aac)
+                        )
+                        if (state.supportedAudioCodecs.contains(MimeTypes.AUDIO_OPUS)) {
+                            codecOptions.add(MimeTypes.AUDIO_OPUS to stringResource(R.string.audio_codec_opus))
+                        }
+
+                        SelectionChipRow(
+                            options = codecOptions,
+                            selected = audioConfig.defaultAudioCodec,
+                            onSelect = { onUpdateAudioConfig(audioConfig.copy(defaultAudioCodec = it)) }
+                        )
+                    }
+
+                    HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
+
                     // Default Audio Bitrate
                     Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) {
                         Text(
