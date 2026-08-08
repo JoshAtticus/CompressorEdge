@@ -140,7 +140,7 @@
     <string name="category_presets_subtitle">خيارات تكوين الإعدادات المسبقة</string>
     <string name="category_video_subtitle">تعديل إعدادات الفيديو الافتراضية</string>
     <string name="category_audio_subtitle">تعديل إعدادات الصوت الافتراضية</string>
-    <string name="version_format">الإصدار %1$s</string>
+    <string name="version_format">%1$s</string>
     
     <string name="header_basic_info">المعلومات الأساسية</string>
     <string name="header_hardware_codecs">الأجهزة والترميزات</string>
@@ -259,7 +259,7 @@
 
     <!-- What's New Dialog -->
     <string name="whats_new_title">ما الجديد في Compressor</string>
-    <string name="whats_new_version">الإصدار %1$s</string>
+    <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">فهمت</string>
     <string name="whats_new_1_title">بناء اسم الملف</string>
     <string name="whats_new_1_desc">اجعل أسماء ملفاتك تعمل لصالحك، يمكنك الآن إضافة مزيد من المعلومات (أو إزالتها) من أسماء ملفات الإخراج في الإعدادات</string>

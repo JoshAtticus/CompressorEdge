@@ -130,7 +130,7 @@
     <string name="category_presets_subtitle">Opciones de configuración de ajustes preestablecidos</string>
     <string name="category_video_subtitle">Ajustar la configuración de video predeterminada</string>
     <string name="category_audio_subtitle">Ajustar la configuración de audio predeterminada</string>
-    <string name="version_format">Versión %1$s</string>
+    <string name="version_format">%1$s</string>
     
     <string name="header_basic_info">Información básica</string>
     <string name="header_hardware_codecs">Hardware y códecs</string>
@@ -253,7 +253,7 @@
 
     <!-- What's New Dialog -->
     <string name="whats_new_title">Novedades en Compressor</string>
-    <string name="whats_new_version">Versión %1$s</string>
+    <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Entendido</string>
     <string name="whats_new_1_title">Generador de nombres</string>
     <string name="whats_new_1_desc">Haz que tus nombres de archivo trabajen para ti; ahora puedes añadir (o quitar) más información en los nombres de archivo de salida en Ajustes.</string>

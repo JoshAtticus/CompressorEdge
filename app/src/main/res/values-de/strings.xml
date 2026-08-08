@@ -135,7 +135,7 @@
     <string name="category_presets_subtitle">Konfigurationsoptionen für Voreinstellungen</string>
     <string name="category_video_subtitle">Standard-Videoeinstellungen anpassen</string>
     <string name="category_audio_subtitle">Standard-Audioeinstellungen anpassen</string>
-    <string name="version_format">Version %1$s</string>
+    <string name="version_format">%1$s</string>
     
     <string name="header_basic_info">Basis-Info</string>
     <string name="header_hardware_codecs">Hardware &amp; Codecs</string>
@@ -258,7 +258,7 @@
 
     <!-- What's New Dialog -->
     <string name="whats_new_title">Was gibt\'s Neues in Compressor</string>
-    <string name="whats_new_version">Version %1$s</string>
+    <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Verstanden</string>
     <string name="whats_new_1_title">Dateinamen-Generator</string>
     <string name="whats_new_1_desc">Passen Sie Ihre Dateinamen an – Sie können jetzt mehr Informationen in den Ausgabedateinamen in den Einstellungen hinzufügen (oder entfernen).</string>

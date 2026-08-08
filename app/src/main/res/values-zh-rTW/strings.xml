@@ -142,7 +142,7 @@
     <string name="category_presets_subtitle">預設設定選項</string>
     <string name="category_video_subtitle">影片壓縮與編解碼器選項</string>
     <string name="category_audio_subtitle">音訊位元率與聲道選項</string>
-    <string name="version_format">版本 %1$s</string>
+    <string name="version_format">%1$s</string>
     
     <string name="header_basic_info">基本資訊</string>
     <string name="header_hardware_codecs">硬體與編解碼器</string>
@@ -261,7 +261,7 @@
 
     <!-- What's New Dialog -->
     <string name="whats_new_title">Compressor 新功能</string>
-    <string name="whats_new_version">版本 %1$s</string>
+    <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">知道了</string>
     <string name="whats_new_1_title">檔名建立器</string>
     <string name="whats_new_1_desc">讓檔名更符合您的需求，現在可以在設定中為輸出檔名新增（或移除）更多資訊。</string>

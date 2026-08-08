@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">Compressor</string>
-    <string name="title_compressor">Compressor</string>
+    <string name="app_name">Compressor Edge</string>
+    <string name="title_compressor">Compressor Edge</string>
     <string name="share">Share</string>
     <string name="saved">Saved</string>
     <string name="saving">Saving…</string>
     <string name="save_action">Save</string>
     <string name="save_to_photos">Save to Photos</string>
     <string name="compress_another_video">Compress Another Video</string>
-    <string name="buy_coffee">☕ Happy with Compressor? Buy me a coffee!</string>
+    <string name="buy_coffee">☕ Happy with Compressor Edge? Buy me a coffee!</string>
     <string name="share_video_title">Share Compressed Video</string>
     <string name="share_error">Cannot share: %1$s</string>
     <string name="original">Original</string>
@@ -140,7 +140,7 @@
     <string name="search_icon_desc">Search</string>
     <string name="clear_search_desc">Clear search</string>
     <string name="no_settings_found">No settings found</string>
-    <string name="about_compressor_title">About Compressor</string>
+    <string name="about_compressor_title">About Compressor Edge</string>
     <string name="basic_info_header">Basic Info</string>
     <string name="display_settings_title">General</string>
     <string name="general_settings_title">General</string>
@@ -152,7 +152,7 @@
     <string name="category_presets_subtitle">Preset configuration options</string>
     <string name="category_video_subtitle">Adjust default video settings</string>
     <string name="category_audio_subtitle">Adjust default audio settings</string>
-    <string name="version_format">Version %1$s</string>
+    <string name="version_format">%1$s</string>
     
     <string name="header_basic_info">Basic info</string>
     <string name="header_hardware_codecs">Hardware &amp; codecs</string>
@@ -263,8 +263,8 @@
     <string name="reset_audio_defaults">Reset Audio Defaults</string>
 
     <!-- What's New Dialog -->
-    <string name="whats_new_title">What\'s new in Compressor</string>
-    <string name="whats_new_version">Version %1$s</string>
+    <string name="whats_new_title">What\'s new in Compressor Edge</string>
+    <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Got it</string>
     <string name="whats_new_1_title">Build-a-filename</string>
     <string name="whats_new_1_desc">Make your filenames work for you, you can now add more information (or remove it) from output filenames in Settings</string>

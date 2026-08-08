@@ -140,7 +140,7 @@
     <string name="category_presets_subtitle">プリセット設定オプション</string>
     <string name="category_video_subtitle">デフォルトの動画設定を調整</string>
     <string name="category_audio_subtitle">デフォルトの音声設定を調整</string>
-    <string name="version_format">バージョン %1$s</string>
+    <string name="version_format">%1$s</string>
     
     <string name="header_basic_info">基本情報</string>
     <string name="header_hardware_codecs">ハードウェアとコーデック</string>
@@ -259,7 +259,7 @@
 
     <!-- What's New Dialog -->
     <string name="whats_new_title">Compressor の新機能</string>
-    <string name="whats_new_version">バージョン %1$s</string>
+    <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">了解</string>
     <string name="whats_new_1_title">ファイル名の作成</string>
     <string name="whats_new_1_desc">出力ファイル名に含める情報を「設定」から自由に追加・削除できるようになりました。</string>
