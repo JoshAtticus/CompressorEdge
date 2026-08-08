@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Compressor"
+rootProject.name = "Compressor Edge"
 include(":app")

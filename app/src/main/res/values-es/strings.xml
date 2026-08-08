@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Compressor</string>
-    <string name="title_compressor">Compressor</string>
+    <string name="app_name">Compressor Edge</string>
+    <string name="title_compressor">Compressor Edge</string>
     <string name="share">Compartir</string>
     <string name="saved">Guardado</string>
     <string name="saving">Guardando…</string>
     <string name="save_to_photos">Guardar en Fotos</string>
     <string name="compress_another_video">Comprimir otro video</string>
-    <string name="buy_coffee">☕ ¿Te gusta Compressor? ¡Invítame a un café!</string>
+    <string name="buy_coffee">☕ ¿Te gusta Compressor Edge? ¡Invítame a un café!</string>
     <string name="share_video_title">Compartir video comprimido</string>
     <string name="share_error">No se puede compartir: %1$s</string>
     <string name="original">Original</string>
@@ -34,7 +34,7 @@
     <string name="error_prefix">Error: %1$s</string>
     <string name="select_video">Selecciona un video para comprimir</string>
     <string name="add_video_desc">Agregar video</string>
-    <string name="total_saved">Has ahorrado %1$s de almacenamiento con Compressor</string>
+    <string name="total_saved">Has ahorrado %1$s de almacenamiento con Compressor Edge</string>
     <string name="compression_complete">¡Compresión completada!</string>
     <string name="compressing_video_label">COMPRIMIENDO VIDEO</string>
     <string name="cancel">Cancelar</string>
@@ -118,7 +118,7 @@
     <string name="search_icon_desc">Buscar</string>
     <string name="clear_search_desc">Limpiar búsqueda</string>
     <string name="no_settings_found">No se encontraron ajustes</string>
-    <string name="about_compressor_title">Acerca de Compressor</string>
+    <string name="about_compressor_title">Acerca de Compressor Edge</string>
     <string name="basic_info_header">Información básica</string>
     <string name="display_settings_title">General</string>
     <string name="general_settings_title">General</string>
@@ -162,10 +162,10 @@
     <string name="show_target_size_preset_subtitle">Mostrar pestaña de ajustes de calidad durante la configuración de video</string>
     
     <string name="output_location_title">Ubicación de guardado</string>
-    <string name="output_location_default">Fotos (Movies/Compressor)</string>
+    <string name="output_location_default">Fotos (Movies/Compressor Edge)</string>
     <string name="output_location_subtitle">Dónde se guardan los videos comprimidos por defecto</string>
     <string name="output_location_reset_title">Usar predeterminado (Fotos)</string>
-    <string name="output_location_reset_subtitle">Restablecer la ubicación de guardado a Películas/Compressor</string>
+    <string name="output_location_reset_subtitle">Restablecer la ubicación de guardado a Películas/Compressor Edge</string>
     <string name="save_to_folder">Guardar</string>
 
     <string name="filename_builder_title">Generador de nombre de archivo</string>
@@ -252,7 +252,7 @@
     <string name="reset_audio_defaults">Restablecer valores de audio</string>
 
     <!-- What's New Dialog -->
-    <string name="whats_new_title">Novedades en Compressor</string>
+    <string name="whats_new_title">Novedades en Compressor Edge</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Entendido</string>
     <string name="whats_new_1_title">Generador de nombres</string>
@@ -262,5 +262,5 @@
     <string name="whats_new_3_title">Refinamientos de UI</string>
     <string name="whats_new_3_desc">Se han corregido y refinado varias partes de la interfaz.</string>
     <string name="whats_new_4_title">Corrección de errores</string>
-    <string name="whats_new_4_desc">Se han corregido varios errores en los ajustes + Compressor es ahora de instancia única, ¡así que no más llenar tus aplicaciones recientes!</string>
+    <string name="whats_new_4_desc">Se han corregido varios errores en los ajustes + Compressor Edge es ahora de instancia única, ¡así que no más llenar tus aplicaciones recientes!</string>
 </resources>

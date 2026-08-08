@@ -95,7 +95,7 @@ fun AboutScreen(
 
     val infoText = remember(state.appInfoVersion, state.supportedCodecs, hardwareInfo, activeWorkaroundText) {
         buildString {
-            appendLine("App: Compressor ${state.appInfoVersion}")
+            appendLine("App: Compressor Edge ${state.appInfoVersion}")
             appendLine("Device: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL} (Android ${android.os.Build.VERSION.RELEASE})")
             appendLine("Chipset: ${hardwareInfo.chipset}")
             appendLine("RAM: ${hardwareInfo.totalRam}")
@@ -416,7 +416,7 @@ fun AboutScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { uriHandler.openUri("https://github.com/JoshAtticus/Compressor") }
+                            .clickable { uriHandler.openUri("https://github.com/JoshAtticus/CompressorEdge") }
                             .padding(horizontal = 20.dp, vertical = 18.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {

@@ -122,7 +122,7 @@ fun CompressionFailedScreen(state: CompressorUiState, onBack: () -> Unit, onSave
                     TextButton(
                         onClick = {
                             haptics.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
-                            uriHandler.openUri("https://github.com/JoshAtticus/Compressor/issues")
+                            uriHandler.openUri("https://github.com/JoshAtticus/CompressorEdge/issues")
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {

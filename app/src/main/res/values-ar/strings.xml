@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Compressor</string>
-    <string name="title_compressor">Compressor</string>
+    <string name="app_name">Compressor Edge</string>
+    <string name="title_compressor">Compressor Edge</string>
     <string name="share">مشاركة</string>
     <string name="saved">تم الحفظ</string>
     <string name="saving">جاري الحفظ…</string>
     <string name="save_to_photos">حفظ في الصور</string>
     <string name="compress_another_video">ضغط فيديو آخر</string>
-    <string name="buy_coffee">☕ راضٍ عن Compressor؟ اشترِ لي قهوة!</string>
+    <string name="buy_coffee">☕ راضٍ عن Compressor Edge؟ اشترِ لي قهوة!</string>
     <string name="share_video_title">مشاركة الفيديو المضغوط</string>
     <string name="share_error">تعذرت المشاركة: %1$s</string>
     <string name="original">الأصلي</string>
@@ -61,7 +61,7 @@
     <string name="error_prefix">خطأ: %1$s</string>
     <string name="select_video">حدد فيديو لضغطه</string>
     <string name="add_video_desc">إضافة فيديو</string>
-    <string name="total_saved">لقد وفرت %1$s من المساحة باستخدام Compressor</string>
+    <string name="total_saved">لقد وفرت %1$s من المساحة باستخدام Compressor Edge</string>
 
     <string name="slider_less_space">مساحة أقل</string>
     <string name="slider_balanced">متوازن</string>
@@ -128,7 +128,7 @@
     <string name="search_icon_desc">بحث</string>
     <string name="clear_search_desc">مسح البحث</string>
     <string name="no_settings_found">لم يتم العثور على إعدادات</string>
-    <string name="about_compressor_title">حول Compressor</string>
+    <string name="about_compressor_title">حول Compressor Edge</string>
     <string name="basic_info_header">المعلومات الأساسية</string>
     <string name="display_settings_title">عام</string>
     <string name="general_settings_title">عام</string>
@@ -172,10 +172,10 @@
     <string name="show_target_size_preset_subtitle">إظهار علامة تبويب الجودة أثناء إعداد الفيديو</string>
     
     <string name="output_location_title">موقع الحفظ</string>
-    <string name="output_location_default">الصور (Movies/Compressor)</string>
+    <string name="output_location_default">الصور (Movies/Compressor Edge)</string>
     <string name="output_location_subtitle">أين تُحفظ الفيديوهات المضغوطة افتراضيًا</string>
     <string name="output_location_reset_title">استخدام الافتراضي (الصور)</string>
-    <string name="output_location_reset_subtitle">إعادة ضبط موقع الحفظ إلى الأفلام/Compressor</string>
+    <string name="output_location_reset_subtitle">إعادة ضبط موقع الحفظ إلى الأفلام/Compressor Edge</string>
     <string name="save_to_folder">حفظ</string>
 
     <string name="filename_builder_title">مُنشئ اسم الملف</string>
@@ -258,7 +258,7 @@
     <string name="reset_audio_defaults">إعادة ضبط إعدادات الصوت</string>
 
     <!-- What's New Dialog -->
-    <string name="whats_new_title">ما الجديد في Compressor</string>
+    <string name="whats_new_title">ما الجديد في Compressor Edge</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">فهمت</string>
     <string name="whats_new_1_title">بناء اسم الملف</string>
@@ -268,5 +268,5 @@
     <string name="whats_new_3_title">تحسينات واجهة المستخدم</string>
     <string name="whats_new_3_desc">تم إصلاح وتحسين أجزاء مختلفة من واجهة المستخدم</string>
     <string name="whats_new_4_title">إصلاح الأخطاء</string>
-    <string name="whats_new_4_desc">تم إصلاح أخطاء متنوعة في الإعدادات + Compressor الآن يعمل بنسخة واحدة، فلا مزيد من ملء قائمة التطبيقات الأخيرة!</string>
+    <string name="whats_new_4_desc">تم إصلاح أخطاء متنوعة في الإعدادات + Compressor Edge الآن يعمل بنسخة واحدة، فلا مزيد من ملء قائمة التطبيقات الأخيرة!</string>
 </resources>

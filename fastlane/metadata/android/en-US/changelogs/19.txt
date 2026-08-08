@@ -1,8 +1,0 @@
-Compressor 1.5.4 adds new features:
-- Original file names are now preserved
-- Cleaned up code and removed unused functions
-
-Bug fixes:
-- Fixed framerate detection for rare edge cases
-
-Compressor 1.5.4 now targets Android 17 (SDK 37). This does not affect device compatibility, Android 7.0 and later is still supported. AGP has been upgraded to 9.1.1.

@@ -160,7 +160,7 @@ fun InfoDialog(
         title = {
             Column {
                  Text(stringResource(R.string.info_title), style = MaterialTheme.typography.titleLarge)
-                 Text("Compressor ${state.appInfoVersion}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                 Text("Compressor Edge ${state.appInfoVersion}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         },
         text = {
@@ -277,7 +277,7 @@ fun InfoDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 TextButton(
-                    onClick = { uriHandler.openUri("https://github.com/JoshAtticus/Compressor") },
+                    onClick = { uriHandler.openUri("https://github.com/JoshAtticus/CompressorEdge") },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(stringResource(R.string.view_on_github))

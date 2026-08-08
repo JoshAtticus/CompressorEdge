@@ -3,17 +3,17 @@
 
 # Compressor Edge
 
-Be on the bleeding edge with Compressor Edge. Compressor Edge includes features & fixes that are not included in Compressor. 
+Be on the bleeding edge with Compressor Edge. Compressor Edge includes features & fixes that are not included in Compressor Edge. 
 
 <br>
 
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white) 
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white) 
-![License](https://img.shields.io/github/license/JoshAtticus/Compressor?style=for-the-badge)
+![License](https://img.shields.io/github/license/JoshAtticus/Compressor Edge?style=for-the-badge)
 </div>
 
 > [!IMPORTANT]
-> Development of Compressor Edge has no fixed schedule, and Compressor takes priority over Compressor Edge.
+> Development of Compressor Edge has no fixed schedule, and Compressor Edge takes priority over Compressor Edge.
 
 ---
 
@@ -30,20 +30,20 @@ You can also donate with crypto:
 ## Credits
 Compressor Edge wouldn't be possible without these amazing people
 
-[@rA9stuff](https://github.com/rA9stuff) - Inspiration to create Compressor & donated
+[@rA9stuff](https://github.com/rA9stuff) - Inspiration to create Compressor Edge & donated
 
-[@tgranz](https://github.com/tgranz) - Provided funding to get Compressor on Google Play
+[@tgranz](https://github.com/tgranz) - Provided funding to get Compressor Edge on Google Play
 
-[@sirtoaks](https://github.com/sirtoaks) - Provided funding to get Compressor on Google Play
+[@sirtoaks](https://github.com/sirtoaks) - Provided funding to get Compressor Edge on Google Play
 
-[@3r1s-s](https://github.com/3r1s-s) - Created Compressor's new logo
+[@3r1s-s](https://github.com/3r1s-s) - Created Compressor Edge's new logo
 
 [@AhmedRX20](https://github.com/AhmedRX20) - Translated into Arabic
 
-I would like to acknowledge that Compressor has used AI language models to assist in translation. Should you find any issues in translation, please open a bug report or a pull request so they can be fixed.
+I would like to acknowledge that Compressor Edge has used AI language models to assist in translation. Should you find any issues in translation, please open a bug report or a pull request so they can be fixed.
 
 ---
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/chart?repos=JoshAtticus/Compressor&type=date&legend=top-left&sealed_token=sNTeAN-m_zFqDfeGZd5lJAfsf4y3KjmvJR7uXX32il2bO6AFPFeqr7UiNveSw0YOrLwlol6zew0GOlZa21PNAzzf3XQLOhQCyoxJ3prS4EAmbhp3MOq_yg)](https://www.star-history.com/?type=date&repos=JoshAtticus%2FCompressor)
+[![Star History Chart](https://api.star-history.com/chart?repos=JoshAtticus/Compressor Edge&type=date&legend=top-left&sealed_token=sNTeAN-m_zFqDfeGZd5lJAfsf4y3KjmvJR7uXX32il2bO6AFPFeqr7UiNveSw0YOrLwlol6zew0GOlZa21PNAzzf3XQLOhQCyoxJ3prS4EAmbhp3MOq_yg)](https://www.star-history.com/?type=date&repos=JoshAtticus%2FCompressor)

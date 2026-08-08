@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Compressor</string>
-    <string name="title_compressor">Compressor</string>
+    <string name="app_name">Compressor Edge</string>
+    <string name="title_compressor">Compressor Edge</string>
     <string name="share">共有</string>
     <string name="saved">保存済み</string>
     <string name="saving">保存中…</string>
@@ -172,10 +172,10 @@
     <string name="show_target_size_preset_subtitle">動画設定時に画質プリセットタブを表示</string>
     
     <string name="output_location_title">保存先</string>
-    <string name="output_location_default">写真 (Movies/Compressor)</string>
+    <string name="output_location_default">写真 (Movies/Compressor Edge)</string>
     <string name="output_location_subtitle">圧縮した動画のデフォルト保存先</string>
     <string name="output_location_reset_title">デフォルトを使用 (写真)</string>
-    <string name="output_location_reset_subtitle">保存場所を Movies/Compressor にリセット</string>
+    <string name="output_location_reset_subtitle">保存場所を Movies/Compressor Edge にリセット</string>
     <string name="save_to_folder">保存</string>
 
     <string name="filename_builder_title">ファイル名ビルダー</string>
@@ -258,7 +258,7 @@
     <string name="reset_audio_defaults">音声デフォルトをリセット</string>
 
     <!-- What's New Dialog -->
-    <string name="whats_new_title">Compressor の新機能</string>
+    <string name="whats_new_title">Compressor Edge の新機能</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">了解</string>
     <string name="whats_new_1_title">ファイル名の作成</string>

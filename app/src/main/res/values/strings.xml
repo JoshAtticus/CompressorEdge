@@ -64,7 +64,7 @@
     <string name="error_prefix">Error: %1$s</string>
     <string name="select_video">Select a video to compress</string>
     <string name="add_video_desc">Add Video</string>
-    <string name="total_saved">You\'ve saved %1$s of storage with Compressor</string>
+    <string name="total_saved">You\'ve saved %1$s of storage with Compressor Edge</string>
 
     <string name="slider_less_space">Less Space</string>
     <string name="slider_balanced">Balanced</string>
@@ -168,10 +168,10 @@
     <string name="auto_save_photos_title">Automatically save</string>
     <string name="auto_save_photos_subtitle">Automatically save compressed videos after compression</string>
     <string name="output_location_title">Save location</string>
-    <string name="output_location_default">Photos (Movies/Compressor)</string>
+    <string name="output_location_default">Photos (Movies/Compressor Edge)</string>
     <string name="output_location_subtitle">Where compressed videos are saved by default</string>
     <string name="output_location_reset_title">Use default (Photos)</string>
-    <string name="output_location_reset_subtitle">Reset save location to Movies/Compressor</string>
+    <string name="output_location_reset_subtitle">Reset save location to Movies/Compressor Edge</string>
 
     <string name="filename_builder_title">Filename builder</string>
     <string name="filename_builder_subtitle">Drag and drop chips to rearrange, add and remove.</string>
@@ -273,5 +273,5 @@
     <string name="whats_new_3_title">UI Refinements</string>
     <string name="whats_new_3_desc">Various parts of the UI have been fixed &amp; refined</string>
     <string name="whats_new_4_title">Bug Fixes</string>
-    <string name="whats_new_4_desc">Various bugs in settings have been fixed + Compressor is now single instance, so no more filling up your recents!</string>
+    <string name="whats_new_4_desc">Various bugs in settings have been fixed + Compressor Edge is now single instance, so no more filling up your recents!</string>
 </resources>

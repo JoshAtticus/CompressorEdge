@@ -1,1 +1,0 @@
-Compressor 1.5.6 is a single patch release to fix a regression in 1.5.5 that broke the app for Mediatek users.

@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Compressor</string>
-    <string name="title_compressor">Compressor</string>
+    <string name="app_name">Compressor Edge</string>
+    <string name="title_compressor">Compressor Edge</string>
     <string name="share">Teilen</string>
     <string name="saved">Gespeichert</string>
     <string name="saving">Speichere…</string>
     <string name="save_to_photos">In Fotos speichern</string>
     <string name="compress_another_video">Weiteres Video komprimieren</string>
-    <string name="buy_coffee">☕ Gefällt dir Compressor? Spendier mir einen Kaffee!</string>
+    <string name="buy_coffee">☕ Gefällt dir Compressor Edge? Spendier mir einen Kaffee!</string>
     <string name="share_video_title">Komprimiertes Video teilen</string>
     <string name="share_error">Teilen nicht möglich: %1$s</string>
     <string name="original">Original</string>
@@ -37,7 +37,7 @@
     <string name="error_prefix">Fehler: %1$s</string>
     <string name="select_video">Video auswählen</string>
     <string name="add_video_desc">Video hinzufügen</string>
-    <string name="total_saved">Du hast %1$s Speicherplatz mit Compressor gespart</string>
+    <string name="total_saved">Du hast %1$s Speicherplatz mit Compressor Edge gespart</string>
     <string name="compression_complete">Komprimierung abgeschlossen!</string>
     <string name="compressing_video_label">KOMPRIMIERE VIDEO</string>
     <string name="cancel">Stornieren</string>
@@ -123,7 +123,7 @@
     <string name="search_icon_desc">Suchen</string>
     <string name="clear_search_desc">Suche löschen</string>
     <string name="no_settings_found">Keine Einstellungen gefunden</string>
-    <string name="about_compressor_title">Über Compressor</string>
+    <string name="about_compressor_title">Über Compressor Edge</string>
     <string name="basic_info_header">Basis-Info</string>
     <string name="display_settings_title">Allgemein</string>
     <string name="general_settings_title">Allgemein</string>
@@ -167,10 +167,10 @@
     <string name="show_target_size_preset_subtitle">Registerkarte für Qualitätsvoreinstellungen während der Videoeinrichtung anzeigen</string>
     
     <string name="output_location_title">Speicherort</string>
-    <string name="output_location_default">Fotos (Filme/Compressor)</string>
+    <string name="output_location_default">Fotos (Filme/Compressor Edge)</string>
     <string name="output_location_subtitle">Wo komprimierte Videos standardmäßig gespeichert werden</string>
     <string name="output_location_reset_title">Standard verwenden (Fotos)</string>
-    <string name="output_location_reset_subtitle">Speicherort auf Filme/Compressor zurücksetzen</string>
+    <string name="output_location_reset_subtitle">Speicherort auf Filme/Compressor Edge zurücksetzen</string>
     <string name="save_to_folder">Speichern</string>
 
     <string name="filename_builder_title">Dateinameneditor</string>
@@ -257,7 +257,7 @@
     <string name="reset_audio_defaults">Audio-Standards zurücksetzen</string>
 
     <!-- What's New Dialog -->
-    <string name="whats_new_title">Was gibt\'s Neues in Compressor</string>
+    <string name="whats_new_title">Was gibt\'s Neues in Compressor Edge</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Verstanden</string>
     <string name="whats_new_1_title">Dateinamen-Generator</string>
@@ -267,5 +267,5 @@
     <string name="whats_new_3_title">UI-Verfeinerungen</string>
     <string name="whats_new_3_desc">Verschiedene Teile der Benutzeroberfläche wurden korrigiert und verfeinert.</string>
     <string name="whats_new_4_title">Fehlerbehebungen</string>
-    <string name="whats_new_4_desc">Verschiedene Fehler in den Einstellungen wurden behoben + Compressor läuft jetzt als einzelne Instanz, also kein Überfüllen der letzten Apps mehr!</string>
+    <string name="whats_new_4_desc">Verschiedene Fehler in den Einstellungen wurden behoben + Compressor Edge läuft jetzt als einzelne Instanz, also kein Überfüllen der letzten Apps mehr!</string>
 </resources>

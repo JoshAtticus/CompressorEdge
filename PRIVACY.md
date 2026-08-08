@@ -1,8 +1,8 @@
-# Privacy Policy for Compressor
+# Privacy Policy for Compressor Edge
 
 **Last updated:** January 26, 2026
 
-**Compressor** ("the App") is designed with privacy as its core principle.
+**Compressor Edge** ("the App") is designed with privacy as its core principle.
 
 ## 1. Data Collection
 The App **does not** collect, store, transmit, or share any personal information, usage data, or metadata. 
@@ -19,4 +19,4 @@ The App contains **no** third-party tracking, analytics, or advertising SDKs (su
 All video compression is performed locally on your device using the Android hardware acceleration capabilities. Your videos never leave your device.
 
 ## 5. Contact
-If you have questions about this policy, please open an issue on the [GitHub Repository](https://github.com/JoshAtticus/Compressor) or send an email to compressor@joshattic.us.
+If you have questions about this policy, please open an issue on the [GitHub Repository](https://github.com/JoshAtticus/CompressorEdge) or send an email to compressor@joshattic.us.

@@ -1,1 +1,0 @@
-Compressor 1.5.5 is a single patch release to fix target size on certain devices by forcing constant bitrate.

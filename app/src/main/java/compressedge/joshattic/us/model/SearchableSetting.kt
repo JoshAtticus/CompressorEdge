@@ -214,7 +214,7 @@ fun rememberSearchableSettings(
         settings.add(SearchableSetting(infoAndroid, "Android ${Build.VERSION.RELEASE}", aboutTitle, "about", Icons.Default.Info, onNavigateToAbout))
         settings.add(SearchableSetting(infoSupportedCodecs, codecsSupportedCount, aboutTitle, "about", Icons.Default.Info, onNavigateToAbout))
         settings.add(SearchableSetting(enableAllCodecs, headerHardwareCodecs, aboutTitle, "about", Icons.Default.Info, onNavigateToAbout))
-        settings.add(SearchableSetting(viewOnGithub, "https://github.com/JoshAtticus/Compressor", aboutTitle, "about", Icons.Default.Build, onNavigateToAbout))
+        settings.add(SearchableSetting(viewOnGithub, "https://github.com/JoshAtticus/CompressorEdge", aboutTitle, "about", Icons.Default.Build, onNavigateToAbout))
         settings.add(SearchableSetting(buyMeACoffee, "https://buymeacoffee.com/joshatticus", aboutTitle, "about", Icons.Default.Favorite, onNavigateToAbout))
         settings.add(SearchableSetting(infoCopyClipboard, headerLinksActions, aboutTitle, "about", Icons.Default.Info, onNavigateToAbout))
 

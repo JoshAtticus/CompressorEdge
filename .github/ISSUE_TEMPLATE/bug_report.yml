@@ -1,5 +1,5 @@
 name: Bug Report
-description: Something isn't working in Compressor
+description: Something isn't working in Compressor Edge
 title: "[BUG] "
 labels: ["bug", "low-priority", "triage"]
 assignees:
@@ -27,14 +27,14 @@ body:
       label: "Device Info"
       description: |
         All fields marked with an asterisk (*) are required, the rest are optional but strongly recommended.
-        Now, please open Compressor, tap the Settings icon in the top right corner, tap "Compressor," scroll down, tap Copy to Clipboard and paste below.
-        (If you do not see it, you are using an old version of Compressor. Please update to 1.6.0 or later. You will not receive any support if you are using an older version.)
+        Now, please open Compressor Edge, tap the Settings icon in the top right corner, tap "Compressor Edge," scroll down, tap Copy to Clipboard and paste below.
+        (If you do not see it, you are using an old version of Compressor Edge. Please update to 1.6.0 or later. You will not receive any support if you are using an older version.)
       value: |
         Device Manufacturer* (e.g. Samsung): 
         - Device Model* (e.g. Galaxy S10): 
         - Android Version* (e.g. 12): 
-        - Compressor Version* (e.g. 1.1.0): 
-        - Where did you get Compressor from?* (GitHub Releases, IzzyOnDroid/F-Droid, Google Play Store): 
+        - Compressor Edge Version* (e.g. 1.1.0): 
+        - Where did you get Compressor Edge from?* (GitHub Releases, IzzyOnDroid/F-Droid, Google Play Store): 
         - Device Chipset (e.g. Exynos 9820): 
         - Device Model Number (e.g. SM-G973F): 
     validations:
@@ -74,7 +74,7 @@ body:
           required: true
         - label: "My issue is written in English, and I understand that my issue will be closed if it is not"
           required: true
-        - label: "My issue is not listed in https://github.com/JoshAtticus/Compressor/issues/3"
+        - label: "My issue is not listed in https://github.com/JoshAtticus/CompressorEdge/issues/3"
           required: true
         - label: "I have added a title to my issue"
           required: true
