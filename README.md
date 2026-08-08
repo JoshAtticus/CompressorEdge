@@ -11,7 +11,7 @@ Development of Compressor Edge has no fixed schedule, and Compressor takes prior
 
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white) 
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white) 
-![License](https://img.shields.io/github/license/JoshAtticus/CompressorEdge?style=for-the-badge)
+![License](https://img.shields.io/github/license/JoshAtticus/Compressor?style=for-the-badge)
 </div>
 
 ---
