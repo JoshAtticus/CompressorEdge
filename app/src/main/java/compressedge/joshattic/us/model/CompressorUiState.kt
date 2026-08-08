@@ -75,7 +75,7 @@ data class CompressorUiState(
     val audioVolume: Float = 1.0f,
     val warnings: List<String> = emptyList(),
     val allCodecsEnabled: Boolean = false,
-    val allCodecsUnlocked: Boolean = false,
+    val allCodecsUnlocked: Boolean = true,
     val highPresetConfig: QualityPresetConfig = QualityPresetConfig(resolutionShortSide = 0, targetFps = 0, sizeRatio = 0.7f, audioBitrate = 320_000),
     val mediumPresetConfig: QualityPresetConfig = QualityPresetConfig(resolutionShortSide = 1080, targetFps = 30, sizeRatio = 0.4f, audioBitrate = 192_000),
     val lowPresetConfig: QualityPresetConfig = QualityPresetConfig(resolutionShortSide = 720, targetFps = 30, sizeRatio = 0.2f, audioBitrate = 128_000),

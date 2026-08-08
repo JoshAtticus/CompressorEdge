@@ -78,10 +78,8 @@ fun AboutScreen(
     val clipboardManager = LocalClipboardManager.current
     val uriHandler = LocalUriHandler.current
 
-    var tapCount by remember { mutableIntStateOf(0) }
     var showConfirmDialog by remember { mutableStateOf(false) }
     var copied by remember { mutableStateOf(false) }
-    var currentToast by remember { mutableStateOf<Toast?>(null) }
 
     val hardwareInfo = remember(context) { compressedge.joshattic.us.utils.HardwareUtils.getHardwareInfo(context) }
     val workarounds = remember { compressedge.joshattic.us.utils.HardwareUtils.getDeviceWorkarounds() }
@@ -292,26 +290,6 @@ fun AboutScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable {
-                                if (!state.allCodecsUnlocked) {
-                                    tapCount++
-                                    if (tapCount >= 7) {
-                                        currentToast?.cancel()
-                                        currentToast = null
-                                        showConfirmDialog = true
-                                        tapCount = 0
-                                    } else if (tapCount >= 4) {
-                                        currentToast?.cancel()
-                                        val toast = Toast.makeText(
-                                            context,
-                                            context.getString(R.string.step_away_codecs, 7 - tapCount),
-                                            Toast.LENGTH_SHORT
-                                        )
-                                        toast.show()
-                                        currentToast = toast
-                                    }
-                                }
-                            }
                             .padding(horizontal = 20.dp, vertical = 18.dp)
                     ) {
                         Column {
@@ -331,32 +309,30 @@ fun AboutScreen(
                         }
                     }
 
-                    if (state.allCodecsUnlocked) {
-                        HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 20.dp, vertical = 14.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = stringResource(R.string.enable_all_codecs),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Switch(
-                                checked = state.allCodecsEnabled,
-                                onCheckedChange = { enabled ->
-                                    if (enabled) {
-                                        showConfirmDialog = true
-                                    } else {
-                                        onDisableAllCodecs()
-                                    }
+                    HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = stringResource(R.string.enable_all_codecs),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Switch(
+                            checked = state.allCodecsEnabled,
+                            onCheckedChange = { enabled ->
+                                if (enabled) {
+                                    showConfirmDialog = true
+                                } else {
+                                    onDisableAllCodecs()
                                 }
-                            )
-                        }
+                            }
+                        )
                     }
 
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))

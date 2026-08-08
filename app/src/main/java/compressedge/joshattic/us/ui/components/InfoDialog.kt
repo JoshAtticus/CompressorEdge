@@ -59,7 +59,6 @@ fun InfoDialog(
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
 
-    var tapCount by remember { mutableIntStateOf(0) }
     var showConfirmDialog by remember { mutableStateOf(false) }
     var localAllCodecsEnabled by remember(state.allCodecsEnabled) { mutableStateOf(state.allCodecsEnabled) }
 
@@ -202,21 +201,25 @@ fun InfoDialog(
                     }
                 }
 
-                if (state.allCodecsUnlocked) {
-                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            "Enable all codecs", 
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Switch(
-                            checked = localAllCodecsEnabled, 
-                            onCheckedChange = { localAllCodecsEnabled = it }
-                        )
-                    }
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        "Enable all codecs", 
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Switch(
+                        checked = localAllCodecsEnabled, 
+                        onCheckedChange = { enabled ->
+                            if (enabled) {
+                                showConfirmDialog = true
+                            } else {
+                                localAllCodecsEnabled = false
+                            }
+                        }
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -224,23 +227,7 @@ fun InfoDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            if (!state.allCodecsUnlocked) {
-                                tapCount++
-                                if (tapCount >= 7) {
-                                    showConfirmDialog = true
-                                    tapCount = 0
-                                } else if (tapCount >= 4) {
-                                    Toast.makeText(
-                                        context,
-                                        "You are now ${7 - tapCount} steps away from enabling all codecs.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     InfoRow(stringResource(R.string.info_supported_codecs), "")
                 }

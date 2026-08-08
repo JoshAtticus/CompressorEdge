@@ -154,7 +154,6 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
     
     internal fun checkSupportedCodecs() {
         val allCodecsEnabled = prefs.getBoolean("all_codecs_enabled", false)
-        val allCodecsUnlocked = prefs.getBoolean("all_codecs_unlocked", false)
         val supported = mutableListOf<String>()
 
         if (allCodecsEnabled) {
@@ -184,7 +183,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                 videoCodec = newCodec, 
                 useH265 = newCodec == MimeTypes.VIDEO_H265,
                 allCodecsEnabled = allCodecsEnabled,
-                allCodecsUnlocked = allCodecsUnlocked
+                allCodecsUnlocked = true
             ) 
         }
     }
@@ -247,7 +246,6 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
     fun enableAllCodecsFeature() {
         prefs.edit {
             putBoolean("all_codecs_enabled", true)
-            putBoolean("all_codecs_unlocked", true)
         }
         checkSupportedCodecs()
     }
@@ -255,7 +253,6 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
     fun disableAllCodecsFeature() {
         prefs.edit {
             putBoolean("all_codecs_enabled", false)
-            putBoolean("all_codecs_unlocked", false)
         }
         checkSupportedCodecs()
     }
