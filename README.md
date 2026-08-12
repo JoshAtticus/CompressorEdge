@@ -3,17 +3,17 @@
 
 # Compressor Edge
 
-Be on the bleeding edge with Compressor Edge. Compressor Edge includes features & fixes that are not included in Compressor Edge. 
+Be on the bleeding edge with Compressor Edge. Compressor Edge includes features & fixes that are not included in Compressor. 
 
 <br>
 
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white) 
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white) 
-![License](https://img.shields.io/github/license/JoshAtticus/CompressorEdge?style=for-the-badge)
+![License](https://img.shields.io/github/license/JoshAtticus/CompressorEdge?style=for-the-badge&v=2)
 </div>
 
 > [!IMPORTANT]
-> Development of Compressor Edge has no fixed schedule, and Compressor Edge takes priority over Compressor Edge.
+> Development of Compressor Edge has no fixed schedule, and Compressor takes priority over Compressor Edge.
 
 > [!TIP]
 > Looking for something more user friendly? Try the original Compressor app [here](https://github.com/JoshAtticus/Compressor)
