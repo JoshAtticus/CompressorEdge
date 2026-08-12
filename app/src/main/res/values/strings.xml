@@ -285,8 +285,8 @@
     <string name="whats_new_title">What\'s new in Compressor Edge</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Got it</string>
-    <string name="whats_new_1_title">Build-a-filename</string>
-    <string name="whats_new_1_desc">Make your filenames work for you, you can now add more information (or remove it) from output filenames in Settings</string>
+    <string name="whats_new_1_title">Batch Compression</string>
+    <string name="whats_new_1_desc">You can now select multiple videos at once to compress them in batch! Easily configure them all together or tweak each video individually.</string>
     <string name="whats_new_2_title">Improved Auto-Adjust Algorithm</string>
     <string name="whats_new_2_desc">Automatic settings adjustments now work even better, settings you change are locked in and you\'ll see a warning if your target size isn\'t possible</string>
     <string name="whats_new_3_title">UI Refinements</string>

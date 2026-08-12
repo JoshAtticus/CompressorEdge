@@ -275,8 +275,8 @@
     <string name="whats_new_title">Novedades en Compressor Edge</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Entendido</string>
-    <string name="whats_new_1_title">Generador de nombres</string>
-    <string name="whats_new_1_desc">Haz que tus nombres de archivo trabajen para ti; ahora puedes añadir (o quitar) más información en los nombres de archivo de salida en Ajustes.</string>
+    <string name="whats_new_1_title">Compresión en lote</string>
+    <string name="whats_new_1_desc">¡Ahora puedes seleccionar varios vídeos a la vez para comprimirlos en lote! Configúralos todos juntos fácilmente o ajusta cada vídeo de forma individual.</string>
     <string name="whats_new_2_title">Algoritmo de autoajuste mejorado</string>
     <string name="whats_new_2_desc">Los ajustes automáticos ahora funcionan aún mejor; los cambios que realices se mantienen y verás un aviso si el tamaño objetivo no es posible.</string>
     <string name="whats_new_3_title">Refinamientos de UI</string>

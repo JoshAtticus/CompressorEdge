@@ -39,12 +39,18 @@ data class CompressorUiState(
     val isBackgroundCompression: Boolean = false,
     val progress: Float = 0f,
     val compressedUri: Uri? = null,
+    val compressedUris: List<Uri> = emptyList(),
     val compressedSize: Long = 0L,
     val currentOutputSize: Long = 0L,
     val error: String? = null,
     val errorLog: String? = null,
     val saveSuccess: Boolean = false,
     val isSaving: Boolean = false,
+    
+    // Batch Mode
+    val isBatchMode: Boolean = false,
+    val queue: List<QueueItem> = emptyList(),
+    val globalTargetSizePercentage: Float = 70f,
     
     // Configuration
     val activePreset: QualityPreset = QualityPreset.CUSTOM,
@@ -96,7 +102,29 @@ data class CompressorUiState(
     )
 ) {
     val targetSizeWarning: Boolean
-        get() = durationMs > 0 && targetSizeMb < minimumSizeMb
+        get() = if (isBatchMode) false else (durationMs > 0 && targetSizeMb < minimumSizeMb)
+
+    val maxOriginalShortSide: Int
+        get() {
+            if (!isBatchMode) {
+                return if (originalWidth > 0 && originalHeight > 0) Math.min(originalWidth, originalHeight) else 0
+            }
+            return queue.maxOfOrNull {
+                if (it.originalWidth > 0 && it.originalHeight > 0) Math.min(it.originalWidth, it.originalHeight) else 0
+            } ?: 0
+        }
+
+    val maxOriginalFps: Float
+        get() {
+            if (!isBatchMode) return originalFps
+            return queue.maxOfOrNull { it.originalFps } ?: 30f
+        }
+
+    val maxOriginalAudioBitrate: Int
+        get() {
+            if (!isBatchMode) return originalAudioBitrate
+            return queue.maxOfOrNull { it.originalAudioBitrate } ?: 0
+        }
 
     /** Returns the settings autoAdjust would choose if user locks were released. */
     fun suggestedForTarget(): CompressorUiState {
@@ -117,31 +145,58 @@ data class CompressorUiState(
     }
 
     private val minBitrate: Long
-        get() {
-            val h = if (targetResolutionHeight > 0) targetResolutionHeight else originalHeight
-            var base = when {
-                h >= 2160 -> 4_000_000L
-                h >= 1440 -> 2_500_000L
-                h >= 1080 -> 1_500_000L
-                h >= 720 -> 1_000_000L
-                h >= 480 -> 500_000L
-                h >= 360 -> 350_000L
-                else -> 200_000L
-            }
-            
-            if (videoCodec == MimeTypes.VIDEO_H265) {
-                base = (base * 0.7).toLong()
-            } else if (videoCodec == MimeTypes.VIDEO_AV1) {
-                base = (base * 0.6).toLong()
-            }
-            
-            val fpsVal = if (targetFps > 0) targetFps.toFloat() else originalFps
-            val multiplier = if (fpsVal > 45) 1.5f else 1.0f
-            return (base * multiplier).toLong()
+        get() = calculateMinBitrate(
+            targetResolutionHeight, 
+            originalHeight, 
+            videoCodec, 
+            if (targetFps > 0) targetFps.toFloat() else originalFps
+        )
+
+    private fun calculateMinBitrate(targetHeight: Int, origHeight: Int, codec: String, fps: Float): Long {
+        val h = if (targetHeight > 0) targetHeight else origHeight
+        var base = when {
+            h >= 2160 -> 4_000_000L
+            h >= 1440 -> 2_500_000L
+            h >= 1080 -> 1_500_000L
+            h >= 720 -> 1_000_000L
+            h >= 480 -> 500_000L
+            h >= 360 -> 350_000L
+            else -> 200_000L
         }
+        
+        if (codec == MimeTypes.VIDEO_H265) {
+            base = (base * 0.7).toLong()
+        } else if (codec == MimeTypes.VIDEO_AV1) {
+            base = (base * 0.6).toLong()
+        }
+        
+        val multiplier = if (fps > 45) 1.5f else 1.0f
+        return (base * multiplier).toLong()
+    }
 
     val minimumSizeMb: Float
         get() {
+            if (isBatchMode) {
+                // Approximate minimum size for the whole batch
+                var totalMin = 0f
+                for (item in queue) {
+                    val seconds = item.durationMs / 1000f
+                    if (seconds <= 0) continue
+                    val audioBits = if (item.removeAudioOverride ?: removeAudio) 0f else {
+                        val rate = if (audioBitrate == 0) 256_000f else audioBitrate.toFloat() // Using global for simplicity here
+                        rate * seconds
+                    }
+                    val itemMinBitrate = calculateMinBitrate(
+                        item.targetResolutionHeightOverride ?: targetResolutionHeight,
+                        item.originalHeight,
+                        videoCodec,
+                        (item.targetFpsOverride ?: targetFps).toFloat().takeIf { it > 0 } ?: item.originalFps
+                    )
+                    val minBits = itemMinBitrate * seconds
+                    totalMin += (minBits + audioBits) / 8f / (1024f * 1024f)
+                }
+                return totalMin.coerceAtLeast(0.1f)
+            }
             if (durationMs <= 0) return 0.1f
             val seconds = durationMs / 1000f
             val audioBits = if (removeAudio) 0f else {
@@ -156,6 +211,33 @@ data class CompressorUiState(
 
     val estimatedSize: String
         get() {
+            if (isBatchMode) {
+                var totalEstimated = 0f
+                for (item in queue) {
+                    val itemOriginal = item.originalSize / (1024f * 1024f)
+                    // If targetSizePercentageOverride is 0..100, we use it. Otherwise fallback to globalTargetSizePercentage.
+                    val pct = item.targetSizePercentageOverride ?: globalTargetSizePercentage
+                    val target = (itemOriginal * (pct / 100f)).coerceAtLeast(0.1f)
+                    
+                    // We need item's minimumSizeMb, approximated
+                    val seconds = item.durationMs / 1000f
+                    val audioBits = if (item.removeAudioOverride ?: removeAudio) 0f else {
+                        val rate = if (audioBitrate == 0) 256_000f else audioBitrate.toFloat()
+                        rate * seconds
+                    }
+                    val itemMinBitrate = calculateMinBitrate(
+                        item.targetResolutionHeightOverride ?: targetResolutionHeight,
+                        item.originalHeight,
+                        videoCodec,
+                        (item.targetFpsOverride ?: targetFps).toFloat().takeIf { it > 0 } ?: item.originalFps
+                    )
+                    val minBits = itemMinBitrate * seconds
+                    val itemMinMb = ((minBits + audioBits) / 8f / (1024f * 1024f)).coerceAtLeast(0.1f)
+                    
+                    totalEstimated += target.coerceAtLeast(itemMinMb)
+                }
+                return String.format(Locale.US, "%.1f MB", totalEstimated)
+            }
             val actualTarget = targetSizeMb.coerceAtLeast(minimumSizeMb)
             return String.format(Locale.US, "%.1f MB", actualTarget)
         }
@@ -209,8 +291,11 @@ data class CompressorUiState(
     val formattedTotalSaved: String
         get() = formatFileSize(totalSavedBytes)
 
+    val totalOriginalSizeBatch: Long
+        get() = if (isBatchMode) queue.sumOf { it.originalSize } else originalSize
+
     val formattedOriginalSize: String
-        get() = formatFileSize(originalSize)
+        get() = formatFileSize(totalOriginalSizeBatch)
         
     val formattedCompressedSize: String
         get() = formatFileSize(compressedSize)
@@ -219,6 +304,7 @@ data class CompressorUiState(
         get() = formatFileSize(currentOutputSize)
 
     fun autoAdjust(targetMb: Float, lockAudioBitrate: Boolean = false, allowUpward: Boolean = true): CompressorUiState {
+        if (isBatchMode) return this
         var state = this
         val audioLocked = lockAudioBitrate || audioBitrateLocked
         val incomingAudioBitrate = audioBitrate

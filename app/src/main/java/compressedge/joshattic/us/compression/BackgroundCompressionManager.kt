@@ -18,6 +18,7 @@ object BackgroundCompressionManager {
         val outputSize: Long = 0L,
         val completed: Boolean = false,
         val compressedUri: Uri? = null,
+        val compressedUris: List<Uri> = emptyList(),
         val compressedSize: Long = 0L,
         val originalSize: Long = 0L,
         val error: String? = null,
@@ -27,6 +28,8 @@ object BackgroundCompressionManager {
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
+
+    var pendingBatch: List<CompressionExecutor.Params> = emptyList()
 
     fun setRunning(originalSize: Long) {
         _state.value = State(isRunning = true, originalSize = originalSize)
@@ -40,9 +43,10 @@ object BackgroundCompressionManager {
         _state.update { it.copy(hdrWarning = message) }
     }
 
-    fun complete(uri: Uri, size: Long) {
+    fun complete(uri: Uri, size: Long, uris: List<Uri> = emptyList()) {
+        val finalUris = if (uris.isNotEmpty()) uris else listOf(uri)
         _state.update {
-            it.copy(isRunning = false, progress = 1f, completed = true, compressedUri = uri, compressedSize = size)
+            it.copy(isRunning = false, progress = 1f, completed = true, compressedUri = uri, compressedUris = finalUris, compressedSize = size)
         }
     }
 
@@ -54,5 +58,6 @@ object BackgroundCompressionManager {
 
     fun reset() {
         _state.value = State()
+        pendingBatch = emptyList()
     }
 }

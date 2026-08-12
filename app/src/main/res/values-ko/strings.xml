@@ -276,8 +276,8 @@
     <string name="whats_new_title">Compressor Edge 새로운 기능</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">확인</string>
-    <string name="whats_new_1_title">파일 이름 작성기</string>
-    <string name="whats_new_1_desc">나만의 파일 이름을 만들어보세요. 설정에서 출력 파일 이름에 정보를 추가하거나 제거할 수 있습니다.</string>
+    <string name="whats_new_1_title">일괄 압축</string>
+    <string name="whats_new_1_desc">이제 여러 동영상을 한 번에 선택하여 일괄 압축할 수 있습니다! 모든 동영상을 함께 손쉽게 설정하거나 각 동영상을 개별적으로 조정해 보세요.</string>
     <string name="whats_new_2_title">자동 조정 알고리즘 개선</string>
     <string name="whats_new_2_desc">자동 설정 조정 기능이 더욱 향상되었습니다. 변경한 설정은 고정되며, 목표 크기가 불가능할 경우 경고가 표시됩니다.</string>
     <string name="whats_new_3_title">UI 개선</string>

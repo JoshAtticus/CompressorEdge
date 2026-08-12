@@ -128,15 +128,16 @@ fun AudioOptionsTab(state: CompressorUiState, viewModel: CompressorViewModel) {
                      horizontalArrangement = Arrangement.spacedBy(8.dp)
                  ) {
                      val bitrates = listOf(320000, 256000, 192000, 160000, 128000, 96000, 64000)
-                     val effectiveSelected = if (state.audioBitrate == 0) state.originalAudioBitrate else state.audioBitrate
-                     val origLabel = if (state.originalAudioBitrate > 0) {
-                         stringResource(R.string.original) + " • ${state.originalAudioBitrate / 1000}k"
+                     val maxAudioBitrate = state.maxOriginalAudioBitrate
+                     val effectiveSelected = if (state.audioBitrate == 0) maxAudioBitrate else state.audioBitrate
+                     val origLabel = if (maxAudioBitrate > 0) {
+                         stringResource(R.string.original) + " • ${maxAudioBitrate / 1000}k"
                      } else {
                          stringResource(R.string.original)
                      }
                      
                      compressedge.joshattic.us.ui.components.SelectionChip(
-                         selected = state.audioBitrate == 0 || (state.originalAudioBitrate > 0 && effectiveSelected == state.originalAudioBitrate),
+                         selected = state.audioBitrate == 0 || (maxAudioBitrate > 0 && effectiveSelected == maxAudioBitrate),
                          onClick = {
                              haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                              viewModel.setAudioBitrate(0)
@@ -144,7 +145,7 @@ fun AudioOptionsTab(state: CompressorUiState, viewModel: CompressorViewModel) {
                          label = origLabel
                      )
                      bitrates.forEach { rate ->
-                         val showChip = state.originalAudioBitrate == 0 || rate < state.originalAudioBitrate
+                         val showChip = maxAudioBitrate == 0 || rate < maxAudioBitrate
                          if (showChip) {
                              compressedge.joshattic.us.ui.components.SelectionChip(
                                  selected = state.audioBitrate == rate,

@@ -20,19 +20,30 @@ class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<CompressorViewModel>()
 
     private fun handleShareIntent(intent: Intent?) {
-        if (intent?.action != Intent.ACTION_SEND || intent.type?.startsWith("video/") != true) {
-            return
-        }
+        if (intent == null) return
 
-        val uri = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableExtra(Intent.EXTRA_STREAM)
-        }
+        if (intent.action == Intent.ACTION_SEND && intent.type?.startsWith("video/") == true) {
+            val uri = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.getParcelableExtra(Intent.EXTRA_STREAM)
+            }
 
-        if (uri != null) {
-            viewModel.updateSelectedUri(this, uri)
+            if (uri != null) {
+                viewModel.updateSelectedUris(this, listOf(uri))
+            }
+        } else if (intent.action == Intent.ACTION_SEND_MULTIPLE && intent.type?.startsWith("video/") == true) {
+            val uris = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM, Uri::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM)
+            }
+
+            if (!uris.isNullOrEmpty()) {
+                viewModel.updateSelectedUris(this, uris.filterNotNull())
+            }
         }
     }
 

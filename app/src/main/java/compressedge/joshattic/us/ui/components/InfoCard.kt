@@ -53,17 +53,26 @@ fun InfoCard(state: CompressorUiState) {
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    "${state.originalWidth}x${state.originalHeight} • ${state.originalFps.toInt()}fps",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.outline
-                )
-                if (state.showBitrate) {
+                if (state.isBatchMode) {
+                    val count = state.queue.size
                     Text(
-                        state.formattedOriginalBitrate,
-                        style = MaterialTheme.typography.labelSmall,
+                        if (count == 1) "1 video in queue" else "$count videos in queue",
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.outline
                     )
+                } else {
+                    Text(
+                        "${state.originalWidth}x${state.originalHeight} • ${state.originalFps.toInt()}fps",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.outline
+                    )
+                    if (state.showBitrate) {
+                        Text(
+                            state.formattedOriginalBitrate,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                    }
                 }
             }
             
@@ -92,24 +101,43 @@ fun InfoCard(state: CompressorUiState) {
                     )
                 }
 
-                val originalMb = state.originalSize / (1024f * 1024f)
-                val actualEst = maxOf(state.targetSizeMb, state.minimumSizeMb)
-                val pct = if (originalMb > 0) (1f - (actualEst / originalMb)) * 100f else 0f
+                val originalMb = if (state.isBatchMode) {
+                    state.totalOriginalSizeBatch / (1024f * 1024f)
+                } else {
+                    state.originalSize / (1024f * 1024f)
+                }
+                
+                val actualEstMb = if (state.isBatchMode) {
+                    var total = 0f
+                    for (item in state.queue) {
+                        val itemOrigMb = item.originalSize / (1024f * 1024f)
+                        val pct = item.targetSizePercentageOverride ?: state.globalTargetSizePercentage
+                        total += (itemOrigMb * (pct / 100f)).coerceAtLeast(0.1f)
+                    }
+                    total
+                } else {
+                    maxOf(state.targetSizeMb, state.minimumSizeMb)
+                }
+
+                val pct = if (originalMb > 0) (1f - (actualEstMb / originalMb)) * 100f else 0f
                 val pctInt = pct.toInt()
 
-                val targetRes = if (state.targetResolutionHeight > 0) state.targetResolutionHeight else state.originalHeight
-                val targetW = if (state.originalHeight > 0) (state.originalWidth.toFloat() / state.originalHeight * targetRes).toInt() else 0
-                val targetFps = if (state.targetFps > 0) state.targetFps else state.originalFps.toInt()
-                
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    "${targetW}x${targetRes} • ${targetFps}fps",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
-                )
+
+                if (!state.isBatchMode) {
+                    val targetRes = if (state.targetResolutionHeight > 0) state.targetResolutionHeight else state.originalHeight
+                    val targetW = if (state.originalHeight > 0) (state.originalWidth.toFloat() / state.originalHeight * targetRes).toInt() else 0
+                    val targetFps = if (state.targetFps > 0) state.targetFps else state.originalFps.toInt()
+                    
+                    Text(
+                        "${targetW}x${targetRes} • ${targetFps}fps",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                    )
+                }
                 
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (state.showBitrate) {
+                    if (!state.isBatchMode && state.showBitrate) {
                         Text(
                             state.formattedBitrate,
                             style = MaterialTheme.typography.labelSmall,
@@ -118,7 +146,7 @@ fun InfoCard(state: CompressorUiState) {
                     }
 
                     if (originalMb > 0) {
-                         if (state.showBitrate) {
+                         if (!state.isBatchMode && state.showBitrate) {
                              Text(
                                  " • ", 
                                  style = MaterialTheme.typography.labelSmall, 
@@ -126,8 +154,8 @@ fun InfoCard(state: CompressorUiState) {
                              )
                          }
                          
-                         val color = if (pctInt > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-                         val text = if (pctInt > 0) "-$pctInt%" else "+${-pctInt}%"
+                         val color = if (pctInt >= 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                         val text = if (pctInt >= 0) "-$pctInt%" else "+${-pctInt}%"
                          
                          Text(
                             text,

@@ -12,10 +12,10 @@ android {
 
     defaultConfig {
         applicationId = "compressedge.joshattic.us"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 37
-        versionCode = 1
-        versionName = "release 1"
+        versionCode = 2
+        versionName = "release 2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

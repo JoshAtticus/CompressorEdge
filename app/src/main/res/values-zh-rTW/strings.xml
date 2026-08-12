@@ -282,8 +282,8 @@
     <string name="whats_new_title">Compressor Edge 新功能</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">知道了</string>
-    <string name="whats_new_1_title">檔名建立器</string>
-    <string name="whats_new_1_desc">讓檔名更符合您的需求，現在可以在設定中為輸出檔名新增（或移除）更多資訊。</string>
+    <string name="whats_new_1_title">批次壓縮</string>
+    <string name="whats_new_1_desc">現在您可以一次選擇多個影片進行批次壓縮！輕鬆統一配置所有影片，或單獨微調每個影片。</string>
     <string name="whats_new_2_title">改進的自動調整演算法</string>
     <string name="whats_new_2_desc">自動設定調整現在效果更佳，您更改的設定將被鎖定，如果目標大小無法實現，您將看到警告。</string>
     <string name="whats_new_3_title">UI 細節優化</string>

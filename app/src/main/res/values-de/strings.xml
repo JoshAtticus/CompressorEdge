@@ -279,8 +279,8 @@
     <string name="whats_new_title">Was gibt\'s Neues in Compressor Edge</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Verstanden</string>
-    <string name="whats_new_1_title">Dateinamen-Generator</string>
-    <string name="whats_new_1_desc">Passen Sie Ihre Dateinamen an – Sie können jetzt mehr Informationen in den Ausgabedateinamen in den Einstellungen hinzufügen (oder entfernen).</string>
+    <string name="whats_new_1_title">Stapelkomprimierung</string>
+    <string name="whats_new_1_desc">Sie können jetzt mehrere Videos gleichzeitig auswählen, um sie stapelweise zu komprimieren! Konfigurieren Sie alle gemeinsam oder passen Sie jedes Video individuell an.</string>
     <string name="whats_new_2_title">Verbesserter Auto-Adjust-Algorithmus</string>
     <string name="whats_new_2_desc">Automatische Einstellungen funktionieren jetzt noch besser. Geänderte Einstellungen werden beibehalten, und Sie erhalten eine Warnung, wenn die Zielgröße nicht möglich ist.</string>
     <string name="whats_new_3_title">UI-Verfeinerungen</string>

@@ -147,9 +147,9 @@ fun CompressorApp(viewModel: CompressorViewModel) {
         }
     }
     
-    val pickMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        if (uri != null) {
-            viewModel.updateSelectedUri(context, uri)
+    val pickMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
+        if (uris.isNotEmpty()) {
+            viewModel.updateSelectedUris(context, uris)
         }
     }
 
@@ -207,6 +207,35 @@ fun CompressorApp(viewModel: CompressorViewModel) {
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "video/mp4"
                 putExtra(Intent.EXTRA_STREAM, contentUri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            context.startActivity(Intent.createChooser(shareIntent, shareVideoTitle))
+        } catch (e: Exception) {
+            Toast.makeText(context, shareErrorTemplate.format(e.message), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun shareVideos(uris: List<Uri>) {
+        if (uris.isEmpty()) return
+        if (uris.size == 1) {
+            shareVideo(uris.first())
+            return
+        }
+        try {
+            val contentUris = ArrayList<Uri>()
+            for (uri in uris) {
+                val pathStr = uri.path ?: continue
+                val file = File(pathStr)
+                if (file.exists()) {
+                    val contentUri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
+                    contentUris.add(contentUri)
+                }
+            }
+            if (contentUris.isEmpty()) return
+
+            val shareIntent = Intent(Intent.ACTION_SEND_MULTIPLE).apply {
+                type = "video/mp4"
+                putParcelableArrayListExtra(Intent.EXTRA_STREAM, contentUris)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             context.startActivity(Intent.createChooser(shareIntent, shareVideoTitle))
@@ -399,7 +428,8 @@ fun CompressorApp(viewModel: CompressorViewModel) {
                                             ResultScreen(
                                                 state = state,
                                                 onShare = {
-                                                    shareVideo(state.compressedUri)
+                                                    val targetUris = if (state.compressedUris.isNotEmpty()) state.compressedUris else listOfNotNull(state.compressedUri)
+                                                    shareVideos(targetUris)
                                                     viewModel.markAsShared()
                                                 },
                                                 onSave = {

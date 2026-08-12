@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.FormatListBulleted
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -53,6 +54,7 @@ import compressedge.joshattic.us.ui.components.InfoCard
 import compressedge.joshattic.us.ui.components.TargetSizeWarning
 import compressedge.joshattic.us.ui.tabs.AudioOptionsTab
 import compressedge.joshattic.us.ui.tabs.PresetsTab
+import compressedge.joshattic.us.ui.tabs.QueueTab
 import compressedge.joshattic.us.ui.tabs.VideoOptionsTab
 import compressedge.joshattic.us.utils.expressiveScale
 import compressedge.joshattic.us.viewmodel.CompressorViewModel
@@ -65,10 +67,14 @@ fun ConfigScreen(
     context: Context,
     onStartCompression: () -> Unit = { viewModel.startCompression(context) }
 ) {
-    val pagerState = rememberPagerState(pageCount = { 3 })
-    val scope = rememberCoroutineScope()
-    val tabs = listOf(stringResource(R.string.tab_presets), stringResource(R.string.tab_video), stringResource(R.string.tab_audio))
+    val tabs = if (state.isBatchMode) {
+        listOf("Queue", stringResource(R.string.tab_presets), stringResource(R.string.tab_video), stringResource(R.string.tab_audio))
+    } else {
+        listOf(stringResource(R.string.tab_presets), stringResource(R.string.tab_video), stringResource(R.string.tab_audio))
+    }
+    val pagerState = rememberPagerState(pageCount = { tabs.size })
     val haptics = LocalHapticFeedback.current
+    val scope = rememberCoroutineScope()
 
     val originalMb = state.originalSize / (1024f * 1024f)
     val actualEst = maxOf(state.targetSizeMb, state.minimumSizeMb)
@@ -87,35 +93,26 @@ fun ConfigScreen(
                     modifier = Modifier.padding(top = 24.dp)
                 ) {
                     Spacer(Modifier.weight(1f))
-                    NavigationRailItem(
-                        selected = pagerState.currentPage == 0,
-                        onClick = {
-                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                            scope.launch { pagerState.animateScrollToPage(0) }
-                        },
-                        icon = { Icon(Icons.Outlined.BookmarkBorder, contentDescription = null) },
-                        label = { Text(stringResource(R.string.tab_presets), fontWeight = FontWeight.Bold) }
-                    )
-                    Spacer(Modifier.height(12.dp))
-                    NavigationRailItem(
-                        selected = pagerState.currentPage == 1,
-                        onClick = {
-                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                            scope.launch { pagerState.animateScrollToPage(1) }
-                        },
-                        icon = { Icon(Icons.Default.Movie, contentDescription = null) },
-                        label = { Text(stringResource(R.string.tab_video), fontWeight = FontWeight.Bold) }
-                    )
-                    Spacer(Modifier.height(12.dp))
-                    NavigationRailItem(
-                        selected = pagerState.currentPage == 2,
-                        onClick = {
-                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                            scope.launch { pagerState.animateScrollToPage(2) }
-                        },
-                        icon = { Icon(Icons.Default.MusicNote, contentDescription = null) },
-                        label = { Text(stringResource(R.string.tab_audio), fontWeight = FontWeight.Bold) }
-                    )
+                    tabs.forEachIndexed { index, title ->
+                        val icon = when (title) {
+                            "Queue" -> Icons.Outlined.FormatListBulleted
+                            stringResource(R.string.tab_presets) -> Icons.Outlined.BookmarkBorder
+                            stringResource(R.string.tab_video) -> Icons.Default.Movie
+                            else -> Icons.Default.MusicNote
+                        }
+                        NavigationRailItem(
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                scope.launch { pagerState.animateScrollToPage(index) }
+                            },
+                            icon = { Icon(icon, contentDescription = null) },
+                            label = { Text(title, fontWeight = FontWeight.Bold) }
+                        )
+                        if (index < tabs.size - 1) {
+                            Spacer(Modifier.height(12.dp))
+                        }
+                    }
                     Spacer(Modifier.weight(1f))
                 }
                 
@@ -147,10 +144,12 @@ fun ConfigScreen(
                                  modifier = Modifier.fillMaxSize(),
                                  userScrollEnabled = false
                              ) { index ->
-                                 when (index) {
-                                     0 -> PresetsTab(state, viewModel)
-                                     1 -> VideoOptionsTab(state, viewModel)
-                                     2 -> AudioOptionsTab(state, viewModel)
+                                 val title = tabs[index]
+                                 when (title) {
+                                     "Queue" -> QueueTab(state, viewModel)
+                                     stringResource(R.string.tab_presets) -> PresetsTab(state, viewModel)
+                                     stringResource(R.string.tab_video) -> VideoOptionsTab(state, viewModel)
+                                     stringResource(R.string.tab_audio) -> AudioOptionsTab(state, viewModel)
                                  }
                              }
                         }
@@ -221,7 +220,7 @@ fun ConfigScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(52.dp)
-                            .padding(horizontal = 20.dp),
+                            .padding(horizontal = 16.dp),
                         shape = CircleShape,
                         color = MaterialTheme.colorScheme.surfaceContainerHighest,
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
@@ -230,15 +229,16 @@ fun ConfigScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(5.dp),
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                .padding(4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(2.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             tabs.forEachIndexed { index, title ->
                                 val selected = pagerState.currentPage == index
-                                val tabIcon = when (index) {
-                                    0 -> Icons.Outlined.BookmarkBorder
-                                    1 -> Icons.Default.Movie
+                                val tabIcon = when (title) {
+                                    "Queue" -> Icons.Outlined.FormatListBulleted
+                                    stringResource(R.string.tab_presets) -> Icons.Outlined.BookmarkBorder
+                                    stringResource(R.string.tab_video) -> Icons.Default.Movie
                                     else -> Icons.Default.MusicNote
                                 }
 
@@ -255,20 +255,24 @@ fun ConfigScreen(
                                     contentColor = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
                                 ) {
                                     Row(
-                                        modifier = Modifier.fillMaxSize(),
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .padding(horizontal = 2.dp),
                                         horizontalArrangement = Arrangement.Center,
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Icon(
                                             imageVector = tabIcon,
                                             contentDescription = null,
-                                            modifier = Modifier.size(19.dp)
+                                            modifier = Modifier.size(17.dp)
                                         )
-                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Spacer(modifier = Modifier.width(4.dp))
                                         Text(
                                             text = title,
-                                            style = MaterialTheme.typography.labelLarge,
-                                            fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold
+                                            style = MaterialTheme.typography.labelMedium,
+                                            fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
+                                            maxLines = 1,
+                                            softWrap = false
                                         )
                                     }
                                 }
@@ -281,10 +285,12 @@ fun ConfigScreen(
                              state = pagerState,
                              modifier = Modifier.fillMaxSize()
                          ) { index ->
-                             when (index) {
-                                 0 -> PresetsTab(state, viewModel)
-                                 1 -> VideoOptionsTab(state, viewModel)
-                                 2 -> AudioOptionsTab(state, viewModel)
+                             val title = tabs[index]
+                             when (title) {
+                                 "Queue" -> QueueTab(state, viewModel)
+                                 stringResource(R.string.tab_presets) -> PresetsTab(state, viewModel)
+                                 stringResource(R.string.tab_video) -> VideoOptionsTab(state, viewModel)
+                                 stringResource(R.string.tab_audio) -> AudioOptionsTab(state, viewModel)
                              }
                          }
                     }

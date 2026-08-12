@@ -33,6 +33,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 /**
@@ -44,6 +45,7 @@ class BackgroundCompressionService : Service() {
 
     companion object {
         const val ACTION_START = "compressedge.joshattic.us.action.START_BACKGROUND_COMPRESSION"
+        const val ACTION_START_BATCH = "compressedge.joshattic.us.action.START_BACKGROUND_COMPRESSION_BATCH"
 
         const val EXTRA_INPUT_URI = "extra_input_uri"
         const val EXTRA_OUTPUT_PATH = "extra_output_path"
@@ -85,6 +87,8 @@ class BackgroundCompressionService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_START) {
             startCompression(intent)
+        } else if (intent?.action == ACTION_START_BATCH) {
+            startBatchCompression(intent)
         }
         return START_NOT_STICKY
     }
@@ -389,6 +393,82 @@ class BackgroundCompressionService : Service() {
         val notificationManager = NotificationManagerCompat.from(this)
         if (notificationManager.areNotificationsEnabled()) {
             notificationManager.notify(NOTIFICATION_ID, notification)
+        }
+    }
+
+    private fun startBatchCompression(intent: Intent) {
+        val batch = BackgroundCompressionManager.pendingBatch
+        if (batch.isEmpty()) {
+            stopSelf()
+            return
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(
+                NOTIFICATION_ID,
+                buildNotification(getString(R.string.notification_bg_starting), null),
+                android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROCESSING
+            )
+        } else {
+            startForeground(
+                NOTIFICATION_ID,
+                buildNotification(getString(R.string.notification_bg_starting), null)
+            )
+        }
+
+        progressJob = scope.launch(Dispatchers.IO) {
+            var anyErrors = false
+            var lastUri: Uri? = null
+            val completedUris = mutableListOf<Uri>()
+
+            for ((index, params) in batch.withIndex()) {
+                if (!isActive || cancelled) break
+
+                try {
+                    val finalSize = CompressionExecutor.executeSuspend(applicationContext, params) { holder, _ ->
+                        val overallProgress = (index.toFloat() + (holder.progress / 100f)) / batch.size.toFloat()
+                        
+                        val currentOutputSize = if (File(params.outputPath).exists()) File(params.outputPath).length() else 0L
+                        BackgroundCompressionManager.updateProgress(overallProgress, currentOutputSize)
+                        
+                        val currentPercent = (overallProgress * 100).toInt()
+                        if (currentPercent != lastProgressPercent) {
+                            lastProgressPercent = currentPercent
+                            updateNotification(currentPercent)
+                        }
+                    }
+                    
+                    val uri = Uri.fromFile(File(params.outputPath))
+                    lastUri = uri
+                    completedUris.add(uri)
+                } catch (e: Exception) {
+                    val errorMsg = if (e is androidx.media3.transformer.ExportException) {
+                        CompressionExecutor.errorMessage(applicationContext, e)
+                    } else {
+                        e.localizedMessage ?: getString(R.string.error_unknown)
+                    }
+                    if (e !is kotlinx.coroutines.CancellationException) {
+                        BackgroundCompressionManager.fail(errorMsg, e.stackTraceToString())
+                        updateNotification(0)
+                    }
+                    anyErrors = true
+                    break
+                }
+            }
+
+            if (!anyErrors && isActive && !cancelled) {
+                val totalOutputSize = completedUris.sumOf { File(it.path!!).length() }
+                BackgroundCompressionManager.complete(
+                    lastUri ?: Uri.parse(""),
+                    totalOutputSize,
+                    completedUris
+                )
+                stopForeground(true)
+                stopSelf()
+            } else {
+                stopForeground(true)
+                stopSelf()
+            }
         }
     }
 

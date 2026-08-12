@@ -280,8 +280,8 @@
     <string name="whats_new_title">ما الجديد في Compressor Edge</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">فهمت</string>
-    <string name="whats_new_1_title">بناء اسم الملف</string>
-    <string name="whats_new_1_desc">اجعل أسماء ملفاتك تعمل لصالحك، يمكنك الآن إضافة مزيد من المعلومات (أو إزالتها) من أسماء ملفات الإخراج في الإعدادات</string>
+    <string name="whats_new_1_title">ضغط الدفعات</string>
+    <string name="whats_new_1_desc">يمكنك الآن تحديد مقاطع فيديو متعددة في وقت واحد لضغطها دفعة واحدة! قم بتكوينها جميعًا معًا بسهولة أو تعديل كل فيديو على حدة.</string>
     <string name="whats_new_2_title">خوارزمية الضبط التلقائي المحسنة</string>
     <string name="whats_new_2_desc">تعديلات الإعدادات التلقائية تعمل الآن بشكل أفضل، الإعدادات التي تغيرها تصبح ثابتة وسترى تحذيراً إذا كان الحجم المستهدف غير ممكن</string>
     <string name="whats_new_3_title">تحسينات واجهة المستخدم</string>

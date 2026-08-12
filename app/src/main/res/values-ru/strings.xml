@@ -282,8 +282,8 @@
     <string name="whats_new_title">Что нового в Compressor Edge</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Понятно</string>
-    <string name="whats_new_1_title">Конструктор имен</string>
-    <string name="whats_new_1_desc">Настройте имена файлов под себя: теперь в Настройках можно добавлять или удалять информацию в именах выходных файлов.</string>
+    <string name="whats_new_1_title">Пакетное сжатие</string>
+    <string name="whats_new_1_desc">Теперь вы можете выбрать несколько видео одновременно для пакетного сжатия! Легко настраивайте их все вместе или редактируйте параметры каждого видео отдельно.</string>
     <string name="whats_new_2_title">Улучшенный алгоритм автоподбора</string>
     <string name="whats_new_2_desc">Автоматическая настройка стала еще точнее. Измененные параметры фиксируются, а если целевой размер недостижим, появится предупреждение.</string>
     <string name="whats_new_3_title">Улучшения интерфейса</string>

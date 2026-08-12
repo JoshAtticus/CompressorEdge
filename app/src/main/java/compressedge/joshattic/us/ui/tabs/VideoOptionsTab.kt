@@ -60,84 +60,137 @@ fun VideoOptionsTab(state: CompressorUiState, viewModel: CompressorViewModel) {
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
-            var sliderValue by remember { mutableFloatStateOf(state.targetSizeMb) }
-            var isUserInteracting by remember { mutableStateOf(false) }
-            
-            LaunchedEffect(state.targetSizeMb) {
-                if (!isUserInteracting) {
-                    sliderValue = state.targetSizeMb
-                }
-            }
+            if (state.isBatchMode) {
+                var sliderValue by remember { mutableFloatStateOf(state.globalTargetSizePercentage) }
+                var isUserInteracting by remember { mutableStateOf(false) }
 
-            LaunchedEffect(sliderValue) {
-                if (isUserInteracting) {
-                    delay(150)
-                    viewModel.setTargetSizePreview(sliderValue)
-                }
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    stringResource(R.string.target_size),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    if (sliderValue >= 1024) String.format(Locale.US, "%.2f GB", sliderValue / 1024f) else String.format(Locale.US, "%.1f MB", sliderValue), 
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-            
-            val originalMb = if (state.originalSize > 0) state.originalSize.toFloat() / (1024f * 1024f) else 100f
-            val minSize = (originalMb * 0.05f).coerceAtLeast(0.5f)
-            val maxSize = maxOf(originalMb, sliderValue, state.targetSizeMb, 1f)
-            
-            val sliderFraction = if (maxSize > minSize) {
-                ((sliderValue - minSize) / (maxSize - minSize)).coerceIn(0f, 1f)
-            } else {
-                0.5f
-            }
-
-            Slider(
-                value = sliderFraction,
-                onValueChange = { fraction ->
-                    isUserInteracting = true
-                    val calculatedSize = minSize + fraction * (maxSize - minSize)
-                    
-                    val roundedSize = when {
-                        maxSize > 500f -> kotlin.math.round(calculatedSize / 5f) * 5f
-                        maxSize > 100f -> kotlin.math.round(calculatedSize)
-                        maxSize > 20f -> kotlin.math.round(calculatedSize * 2f) / 2f
-                        else -> kotlin.math.round(calculatedSize * 10f) / 10f
-                    }.coerceIn(minSize, maxSize)
-
-                    if (sliderValue != roundedSize) {
-                        sliderValue = roundedSize
-                        haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                LaunchedEffect(state.globalTargetSizePercentage) {
+                    if (!isUserInteracting) {
+                        sliderValue = state.globalTargetSizePercentage
                     }
-                },
-                onValueChangeFinished = {
-                    isUserInteracting = false
-                    viewModel.setTargetSize(sliderValue)
-                    haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                },
-                valueRange = 0f..1f,
-                steps = 0
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(stringResource(R.string.slider_less_space), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary)
-                Text(stringResource(R.string.slider_balanced), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary)
-                Text(stringResource(R.string.slider_high_quality), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary)
+                }
+
+                LaunchedEffect(sliderValue) {
+                    if (isUserInteracting) {
+                        delay(150)
+                        viewModel.setGlobalTargetSizePercentage(sliderValue)
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "Target Percentage",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        "${sliderValue.toInt()}%",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                Slider(
+                    value = sliderValue,
+                    onValueChange = { value ->
+                        isUserInteracting = true
+                        sliderValue = kotlin.math.round(value)
+                        haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    },
+                    onValueChangeFinished = {
+                        isUserInteracting = false
+                        viewModel.setGlobalTargetSizePercentage(sliderValue)
+                        haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    },
+                    valueRange = 10f..100f,
+                    steps = 17 // Every 5%
+                )
+            } else {
+                var sliderValue by remember { mutableFloatStateOf(state.targetSizeMb) }
+                var isUserInteracting by remember { mutableStateOf(false) }
+                
+                LaunchedEffect(state.targetSizeMb) {
+                    if (!isUserInteracting) {
+                        sliderValue = state.targetSizeMb
+                    }
+                }
+
+                LaunchedEffect(sliderValue) {
+                    if (isUserInteracting) {
+                        delay(150)
+                        viewModel.setTargetSizePreview(sliderValue)
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        stringResource(R.string.target_size),
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        if (sliderValue >= 1024) String.format(Locale.US, "%.2f GB", sliderValue / 1024f) else String.format(Locale.US, "%.1f MB", sliderValue), 
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                
+                val originalMb = if (state.originalSize > 0) state.originalSize.toFloat() / (1024f * 1024f) else 100f
+                val minSize = (originalMb * 0.05f).coerceAtLeast(0.5f)
+                val maxSize = maxOf(originalMb, sliderValue, state.targetSizeMb, 1f)
+                
+                val sliderFraction = if (maxSize > minSize) {
+                    ((sliderValue - minSize) / (maxSize - minSize)).coerceIn(0f, 1f)
+                } else {
+                    0.5f
+                }
+
+                Slider(
+                    value = sliderFraction,
+                    onValueChange = { fraction ->
+                        isUserInteracting = true
+                        val calculatedSize = minSize + fraction * (maxSize - minSize)
+                        
+                        val roundedSize = when {
+                            maxSize > 500f -> kotlin.math.round(calculatedSize / 5f) * 5f
+                            maxSize > 100f -> kotlin.math.round(calculatedSize)
+                            maxSize > 20f -> kotlin.math.round(calculatedSize * 2f) / 2f
+                            else -> kotlin.math.round(calculatedSize * 10f) / 10f
+                        }.coerceIn(minSize, maxSize)
+
+                        if (sliderValue != roundedSize) {
+                            sliderValue = roundedSize
+                            haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        }
+                    },
+                    onValueChangeFinished = {
+                        isUserInteracting = false
+                        viewModel.setTargetSize(sliderValue)
+                        haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    },
+                    valueRange = 0f..1f,
+                    steps = 0
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(stringResource(R.string.slider_less_space), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary)
+                    Text(stringResource(R.string.slider_balanced), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary)
+                    Text(stringResource(R.string.slider_high_quality), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary)
+                }
             }
+
             
             Spacer(modifier = Modifier.height(16.dp))
             
@@ -193,8 +246,8 @@ fun VideoOptionsTab(state: CompressorUiState, viewModel: CompressorViewModel) {
                 val resQuarter = stringResource(R.string.res_quarter)
 
                 val allRes = listOf(4320 to res4320, 2160 to res2160, 1440 to res1440, 1080 to res1080, 720 to res720, 540 to res540, 480 to res480)
-                val isVertical = state.originalHeight > state.originalWidth
-                val originalShortSide = minOf(state.originalWidth, state.originalHeight)
+                val isVertical = if (!state.isBatchMode) state.originalHeight > state.originalWidth else false
+                val originalShortSide = state.maxOriginalShortSide
                 val currentShortSide = if (
                     isVertical &&
                     state.originalWidth > 0 &&
@@ -208,19 +261,19 @@ fun VideoOptionsTab(state: CompressorUiState, viewModel: CompressorViewModel) {
                     originalShortSide
                 }
                 
-                val options = remember(state.originalWidth, state.originalHeight) {
-                    val shortSide = minOf(state.originalWidth, state.originalHeight)
-                    val standard = allRes.filter { it.first <= shortSide }
+                val options = remember(originalShortSide) {
+                    val standard = allRes.filter { it.first <= originalShortSide }
                     val fractions = listOf(
-                        (shortSide * 0.75).toInt() to resThreeQuarters,
-                        (shortSide * 0.5).toInt() to resHalf,
-                        (shortSide * 0.25).toInt() to resQuarter
+                        (originalShortSide * 0.75).toInt() to resThreeQuarters,
+                        (originalShortSide * 0.5).toInt() to resHalf,
+                        (originalShortSide * 0.25).toInt() to resQuarter
                     )
                     (standard + fractions)
                         .filter { it.first > 0 }
                         .sortedByDescending { it.first }
                         .distinctBy { it.first }
                 }
+
 
                 Row(modifier = Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     compressedge.joshattic.us.ui.components.SelectionChip(
@@ -263,7 +316,7 @@ fun VideoOptionsTab(state: CompressorUiState, viewModel: CompressorViewModel) {
                         haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                         viewModel.setFps(0) 
                     },
-                    label = stringResource(R.string.original) + " • ${state.originalFps.toInt()}"
+                    label = stringResource(R.string.original) + " • ${state.maxOriginalFps.toInt()}"
                 )
                 compressedge.joshattic.us.ui.components.SelectionChip(
                     selected = state.targetFps == 60,
@@ -272,7 +325,7 @@ fun VideoOptionsTab(state: CompressorUiState, viewModel: CompressorViewModel) {
                         viewModel.setFps(60) 
                     },
                     label = stringResource(R.string.fps_60),
-                    enabled = state.originalFps >= 50f
+                    enabled = state.maxOriginalFps >= 50f
                 )
                 compressedge.joshattic.us.ui.components.SelectionChip(
                     selected = state.targetFps == 30,

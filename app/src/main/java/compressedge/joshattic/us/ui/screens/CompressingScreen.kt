@@ -175,16 +175,42 @@ fun CompressingScreen(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    val animatedProgress by animateFloatAsState(
-                        targetValue = state.progress,
-                        animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing),
-                        label = "ProgressAnimation"
-                    )
-                    LinearProgressIndicator(
-                        progress = { animatedProgress },
-                        modifier = Modifier.fillMaxWidth().height(6.dp),
-                        strokeCap = StrokeCap.Round
-                    )
+                    if (state.isBatchMode && state.queue.isNotEmpty()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().height(6.dp),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            val totalItems = state.queue.size
+                            for (i in 0 until totalItems) {
+                                val itemProgress = when {
+                                    state.progress >= (i + 1).toFloat() / totalItems -> 1f
+                                    state.progress > i.toFloat() / totalItems -> (state.progress * totalItems) - i
+                                    else -> 0f
+                                }
+                                val animatedItemProgress by animateFloatAsState(
+                                    targetValue = itemProgress,
+                                    animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing),
+                                    label = "SegmentProgressAnimation_$i"
+                                )
+                                LinearProgressIndicator(
+                                    progress = { animatedItemProgress },
+                                    modifier = Modifier.weight(1f).height(6.dp),
+                                    strokeCap = StrokeCap.Round
+                                )
+                            }
+                        }
+                    } else {
+                        val animatedProgress by animateFloatAsState(
+                            targetValue = state.progress,
+                            animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing),
+                            label = "ProgressAnimation"
+                        )
+                        LinearProgressIndicator(
+                            progress = { animatedProgress },
+                            modifier = Modifier.fillMaxWidth().height(6.dp),
+                            strokeCap = StrokeCap.Round
+                        )
+                    }
                 }
             }
             
