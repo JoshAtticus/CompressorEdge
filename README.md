@@ -23,9 +23,10 @@ Be on the bleeding edge with Compressor Edge. Compressor Edge includes features 
 ## Features
 Compressor Edge contains the following features not found in Compressor:
 
-- Audio Encoding Selection
+- Video Queue (Batch Compression)
 - Background Compression (with Live Activities & Screen-off support on Android 16+)
 - Enable All Codecs option in Settings
+- Audio Encoding Selection
 
 There's more to come soon, Compressor Edge is always improving.
 
