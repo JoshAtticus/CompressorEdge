@@ -15,6 +15,9 @@ Be on the bleeding edge with Compressor Edge. Compressor Edge includes features 
 > [!IMPORTANT]
 > Development of Compressor Edge has no fixed schedule, and Compressor takes priority over Compressor Edge.
 
+> [!WARNING]
+> Compressor Edge now requires **Android 8.0.0 or later** for release 2 and later. The original Compressor app's requirement of Android 7.0 has not changed.
+
 > [!TIP]
 > Looking for something more user friendly? Try the original Compressor app [here](https://github.com/JoshAtticus/Compressor)
 
