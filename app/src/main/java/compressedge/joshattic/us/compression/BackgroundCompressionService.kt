@@ -429,7 +429,7 @@ class BackgroundCompressionService : Service() {
                         val overallProgress = (index.toFloat() + (holder.progress / 100f)) / batch.size.toFloat()
                         
                         val currentOutputSize = if (File(params.outputPath).exists()) File(params.outputPath).length() else 0L
-                        BackgroundCompressionManager.updateProgress(overallProgress, currentOutputSize)
+                        BackgroundCompressionManager.updateProgress(overallProgress, currentOutputSize, params.inputUri, index)
                         
                         val currentPercent = (overallProgress * 100).toInt()
                         if (currentPercent != lastProgressPercent) {

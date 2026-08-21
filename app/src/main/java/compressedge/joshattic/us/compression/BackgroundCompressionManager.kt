@@ -23,7 +23,9 @@ object BackgroundCompressionManager {
         val originalSize: Long = 0L,
         val error: String? = null,
         val errorLog: String? = null,
-        val hdrWarning: String? = null
+        val hdrWarning: String? = null,
+        val currentlyCompressingUri: Uri? = null,
+        val currentlyCompressingIndex: Int = 0
     )
 
     private val _state = MutableStateFlow(State())
@@ -35,8 +37,15 @@ object BackgroundCompressionManager {
         _state.value = State(isRunning = true, originalSize = originalSize)
     }
 
-    fun updateProgress(progress: Float, outputSize: Long) {
-        _state.update { it.copy(progress = progress, outputSize = outputSize) }
+    fun updateProgress(progress: Float, outputSize: Long, currentUri: Uri? = null, currentIndex: Int = 0) {
+        _state.update { 
+            it.copy(
+                progress = progress, 
+                outputSize = outputSize,
+                currentlyCompressingUri = currentUri ?: it.currentlyCompressingUri,
+                currentlyCompressingIndex = currentIndex
+            ) 
+        }
     }
 
     fun setHdrWarning(message: String) {

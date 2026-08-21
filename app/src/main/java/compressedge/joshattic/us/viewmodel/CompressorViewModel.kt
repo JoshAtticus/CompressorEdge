@@ -1443,6 +1443,13 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
             for ((index, item) in itemsToProcess.withIndex()) {
                 if (!isActive) break
 
+                _uiState.update {
+                    it.copy(
+                        currentlyCompressingIndex = index,
+                        currentlyCompressingUri = item.uri
+                    )
+                }
+
                 val itemRequestedShortSide = item.targetResolutionHeightOverride ?: currentState.targetResolutionHeight
                 val itemRequestedFps = item.targetFpsOverride ?: currentState.targetFps
 
@@ -1817,7 +1824,9 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                                 isCompressing = bg.isRunning,
                                 isBackgroundCompression = bg.isRunning,
                                 progress = bg.progress,
-                                currentOutputSize = bg.outputSize
+                                currentOutputSize = bg.outputSize,
+                                currentlyCompressingUri = bg.currentlyCompressingUri,
+                                currentlyCompressingIndex = bg.currentlyCompressingIndex
                             )
                         }
                     }

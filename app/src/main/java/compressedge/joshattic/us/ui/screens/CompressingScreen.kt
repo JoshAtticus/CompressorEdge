@@ -62,20 +62,41 @@ fun CompressingScreen(
     onCancel: () -> Unit
 ) {
     val context = LocalContext.current
-    var thumbnail by remember { mutableStateOf<ImageBitmap?>(null) }
+    var thumbnailMap by remember { mutableStateOf<Map<android.net.Uri, ImageBitmap>>(emptyMap()) }
+
+    val currentUri = state.currentlyCompressingUri 
+        ?: if (state.isBatchMode && state.queue.isNotEmpty()) {
+            state.queue.getOrNull(state.currentlyCompressingIndex)?.uri ?: state.selectedUri
+        } else {
+            state.selectedUri
+        }
     
-    // Load Thumbnail
-    LaunchedEffect(state.selectedUri) {
-        if (state.selectedUri == null) return@LaunchedEffect
+    // Preload/load Thumbnails
+    LaunchedEffect(state.queue, state.selectedUri, currentUri) {
+        val urisToLoad = if (state.isBatchMode && state.queue.isNotEmpty()) {
+            state.queue.map { it.uri }
+        } else {
+            listOfNotNull(state.selectedUri)
+        }
+        
         withContext(Dispatchers.IO) {
-            try {
-                val retriever = android.media.MediaMetadataRetriever()
-                retriever.setDataSource(context, state.selectedUri)
-                val bitmap = retriever.getFrameAtTime(0)
-                thumbnail = bitmap?.asImageBitmap()
-                try { retriever.release() } catch(e: Exception){}
-            } catch (e: Exception) {
-                e.printStackTrace()
+            for (uri in urisToLoad) {
+                if (!thumbnailMap.containsKey(uri)) {
+                    try {
+                        val retriever = android.media.MediaMetadataRetriever()
+                        retriever.setDataSource(context, uri)
+                        val bitmap = retriever.getFrameAtTime(0)
+                        if (bitmap != null) {
+                            val imageBitmap = bitmap.asImageBitmap()
+                            withContext(Dispatchers.Main) {
+                                thumbnailMap = thumbnailMap + (uri to imageBitmap)
+                            }
+                        }
+                        try { retriever.release() } catch (_: Exception) {}
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
             }
         }
     }
@@ -106,13 +127,30 @@ fun CompressingScreen(
                     .clip(RoundedCornerShape(28.dp))
                     .background(Color.DarkGray)
             ) {
-                if (thumbnail != null) {
-                    Image(
-                        bitmap = thumbnail!!,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
+                AnimatedContent(
+                    targetState = currentUri,
+                    transitionSpec = {
+                        fadeIn(animationSpec = tween(durationMillis = 400)) togetherWith 
+                            fadeOut(animationSpec = tween(durationMillis = 400))
+                    },
+                    modifier = Modifier.fillMaxSize(),
+                    label = "ThumbnailFadeAnimation"
+                ) { uri ->
+                    val targetThumbnail = uri?.let { thumbnailMap[it] }
+                    if (targetThumbnail != null) {
+                        Image(
+                            bitmap = targetThumbnail,
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.DarkGray)
+                        )
+                    }
                 }
                 
                 Box(
@@ -168,12 +206,34 @@ fun CompressingScreen(
                     modifier = Modifier.padding(24.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Text(
-                        stringResource(R.string.compressing_video_label),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontWeight = FontWeight.Bold
-                    )
+                    val labelText = if (state.isBatchMode && state.queue.isNotEmpty()) {
+                        val total = state.queue.size
+                        val currentNum = (state.currentlyCompressingIndex + 1).coerceIn(1, total)
+                        val currentName = state.queue.getOrNull(state.currentlyCompressingIndex)?.originalName ?: ""
+                        if (currentName.isNotBlank()) {
+                            stringResource(R.string.compressing_video_label) + " ($currentNum/$total) • $currentName"
+                        } else {
+                            stringResource(R.string.compressing_video_label) + " ($currentNum/$total)"
+                        }
+                    } else {
+                        stringResource(R.string.compressing_video_label)
+                    }
+
+                    AnimatedContent(
+                        targetState = labelText,
+                        transitionSpec = {
+                            fadeIn(animationSpec = tween(300)) togetherWith fadeOut(animationSpec = tween(300))
+                        },
+                        label = "LabelFadeAnimation"
+                    ) { text ->
+                        Text(
+                            text = text,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1
+                        )
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                     if (state.isBatchMode && state.queue.isNotEmpty()) {
                         Row(

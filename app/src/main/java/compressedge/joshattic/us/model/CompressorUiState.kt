@@ -52,6 +52,8 @@ data class CompressorUiState(
     val isBatchMode: Boolean = false,
     val queue: List<QueueItem> = emptyList(),
     val globalTargetSizePercentage: Float = 70f,
+    val currentlyCompressingIndex: Int = 0,
+    val currentlyCompressingUri: Uri? = null,
     
     // Configuration
     val activePreset: QualityPreset = QualityPreset.CUSTOM,
