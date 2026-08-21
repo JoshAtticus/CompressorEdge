@@ -30,10 +30,16 @@ import androidx.media3.transformer.VideoEncoderSettings
 import compressedge.joshattic.us.R
 import compressedge.joshattic.us.utils.VolumeAudioProcessor
 import java.io.File
+import android.os.Handler
+import android.os.Looper
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /** Runs a single Media3 Transformer export for either the foreground or background path. */
 @OptIn(UnstableApi::class)
@@ -135,6 +141,7 @@ object CompressionExecutor {
         }
 
         val transformerBuilder = Transformer.Builder(context)
+            .setLooper(Looper.getMainLooper())
             .setVideoMimeType(videoMimeType)
             .setAudioMimeType(audioMimeType)
             .apply {
@@ -216,43 +223,49 @@ object CompressionExecutor {
         context: Context,
         params: Params,
         onProgress: (androidx.media3.transformer.ProgressHolder, Transformer) -> Unit
-    ): Long = kotlinx.coroutines.suspendCancellableCoroutine { cont ->
-        var activeTransformer: Transformer? = null
+    ): Long = withContext(Dispatchers.Main) {
+        var progressJob: Job? = null
+        try {
+            kotlinx.coroutines.suspendCancellableCoroutine { cont ->
+                val transformer = try {
+                    execute(
+                        context,
+                        params,
+                        onCompleted = { size -> if (cont.isActive) cont.resume(size) },
+                        onError = { err -> if (cont.isActive) cont.resumeWithException(err) }
+                    )
+                } catch (e: Exception) {
+                    if (cont.isActive) cont.resumeWithException(e)
+                    return@suspendCancellableCoroutine
+                }
 
-        val mainJob = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
-            try {
-                val transformer = execute(
-                    context,
-                    params,
-                    onCompleted = { size -> if (cont.isActive) cont.resume(size) },
-                    onError = { err -> if (cont.isActive) cont.resumeWithException(err) }
-                )
-                activeTransformer = transformer
-            } catch (e: Exception) {
-                if (cont.isActive) cont.resumeWithException(e)
-            }
-        }
-
-        val progressJob = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main.immediate).launch {
-            while (isActive && !cont.isCompleted) {
-                val t = activeTransformer
-                if (t != null) {
-                    val holder = androidx.media3.transformer.ProgressHolder()
-                    val state = t.getProgress(holder)
-                    if (state != Transformer.PROGRESS_STATE_NOT_STARTED) {
-                        onProgress(holder, t)
+                progressJob = launch {
+                    while (isActive) {
+                        val holder = androidx.media3.transformer.ProgressHolder()
+                        val state = transformer.getProgress(holder)
+                        if (state != Transformer.PROGRESS_STATE_NOT_STARTED) {
+                            onProgress(holder, transformer)
+                        }
+                        delay(200)
                     }
                 }
-                kotlinx.coroutines.delay(200)
-            }
-        }
 
-        cont.invokeOnCancellation {
-            progressJob.cancel()
-            mainJob.cancel()
-            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
-                activeTransformer?.cancel()
+                cont.invokeOnCancellation {
+                    if (Looper.myLooper() == Looper.getMainLooper()) {
+                        try {
+                            transformer.cancel()
+                        } catch (_: Exception) {}
+                    } else {
+                        Handler(Looper.getMainLooper()).post {
+                            try {
+                                transformer.cancel()
+                            } catch (_: Exception) {}
+                        }
+                    }
+                }
             }
+        } finally {
+            progressJob?.cancel()
         }
     }
 
