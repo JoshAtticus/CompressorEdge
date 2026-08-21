@@ -99,8 +99,7 @@ private fun QueueItemCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .expressiveScale(interactionSource),
+            .padding(horizontal = 20.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer
@@ -264,7 +263,7 @@ private fun QueueItemCard(
 
                         // 2. Resolution Override
                         Column {
-                            val shortSide = if (item.originalWidth > 0 && item.originalHeight > 0) Math.min(item.originalWidth, item.originalHeight) else item.originalHeight
+                            val shortSide = if (item.originalWidth > 0 && item.originalHeight > 0) minOf(item.originalWidth, item.originalHeight) else item.originalHeight
                             val currentRes = item.targetResolutionHeightOverride ?: 0
 
                             Row(
@@ -296,15 +295,25 @@ private fun QueueItemCard(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 SelectionChip(
-                                    selected = currentRes == 0,
+                                    selected = currentRes == 0 || currentRes == shortSide,
                                     onClick = {
                                         haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                                         viewModel.updateQueueItem(item.uri) { it.copy(targetResolutionHeightOverride = null) }
                                     },
-                                    label = stringResource(R.string.original)
+                                    label = stringResource(R.string.original) + " • ${shortSide}p"
                                 )
-                                val resList = listOf(2160 to "4K", 1440 to "2K", 1080 to "1080p", 720 to "720p", 540 to "540p", 480 to "480p")
-                                resList.filter { it.first <= shortSide }.forEach { (h, label) ->
+                                val resList = listOf(
+                                    4320 to "8K",
+                                    2160 to "4K",
+                                    1440 to "2K",
+                                    1080 to "1080p",
+                                    720 to "720p",
+                                    540 to "540p",
+                                    480 to "480p",
+                                    360 to "360p",
+                                    240 to "240p"
+                                )
+                                resList.filter { it.first < shortSide }.forEach { (h, label) ->
                                     SelectionChip(
                                         selected = currentRes == h,
                                         onClick = {

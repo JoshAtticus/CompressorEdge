@@ -233,69 +233,69 @@ fun VideoOptionsTab(state: CompressorUiState, viewModel: CompressorViewModel) {
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold
             )
-            Row(modifier = Modifier.padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                
-                val res4320 = stringResource(R.string.res_8k)
-                val res2160 = stringResource(R.string.res_4k)
-                val res1440 = stringResource(R.string.res_2k)
-                val res1080 = stringResource(R.string.res_1080p)
-                val res720 = stringResource(R.string.res_720p)
-                val res540 = stringResource(R.string.res_540p)
-                val res480 = stringResource(R.string.res_480p)
+            
+            val res4320 = stringResource(R.string.res_8k)
+            val res2160 = stringResource(R.string.res_4k)
+            val res1440 = stringResource(R.string.res_2k)
+            val res1080 = stringResource(R.string.res_1080p)
+            val res720 = stringResource(R.string.res_720p)
+            val res540 = stringResource(R.string.res_540p)
+            val res480 = stringResource(R.string.res_480p)
 
-                val resThreeQuarters = stringResource(R.string.res_three_quarters)
-                val resHalf = stringResource(R.string.res_half)
-                val resQuarter = stringResource(R.string.res_quarter)
+            val resThreeQuarters = stringResource(R.string.res_three_quarters)
+            val resHalf = stringResource(R.string.res_half)
+            val resQuarter = stringResource(R.string.res_quarter)
 
-                val allRes = listOf(4320 to res4320, 2160 to res2160, 1440 to res1440, 1080 to res1080, 720 to res720, 540 to res540, 480 to res480)
-                val isVertical = if (!state.isBatchMode) state.originalHeight > state.originalWidth else false
-                val originalShortSide = state.maxOriginalShortSide
-                val currentShortSide = if (
-                    isVertical &&
-                    state.originalWidth > 0 &&
-                    state.originalHeight > 0 &&
-                    state.targetResolutionHeight > 0
-                ) {
-                    (state.targetResolutionHeight.toLong() * state.originalWidth / state.originalHeight).toInt()
-                } else if (state.targetResolutionHeight > 0) {
-                    state.targetResolutionHeight
-                } else {
-                    originalShortSide
-                }
-                
-                val options = remember(originalShortSide) {
-                    val standard = allRes.filter { it.first <= originalShortSide }
-                    val fractions = listOf(
-                        (originalShortSide * 0.75).toInt() to resThreeQuarters,
-                        (originalShortSide * 0.5).toInt() to resHalf,
-                        (originalShortSide * 0.25).toInt() to resQuarter
-                    )
-                    (standard + fractions)
-                        .filter { it.first > 0 }
-                        .sortedByDescending { it.first }
-                        .distinctBy { it.first }
-                }
+            val allRes = listOf(
+                4320 to res4320,
+                2160 to res2160,
+                1440 to res1440,
+                1080 to res1080,
+                720 to res720,
+                540 to res540,
+                480 to res480,
+                360 to "360p",
+                240 to "240p"
+            )
+            val originalShortSide = state.maxOriginalShortSide
+            val currentShortSide = if (state.targetResolutionHeight > 0) state.targetResolutionHeight else 0
+            
+            val options = remember(originalShortSide) {
+                val standard = allRes.filter { it.first < originalShortSide }
+                val fractions = listOf(
+                    (originalShortSide * 0.75).toInt() to resThreeQuarters,
+                    (originalShortSide * 0.5).toInt() to resHalf,
+                    (originalShortSide * 0.25).toInt() to resQuarter
+                )
+                (standard + fractions)
+                    .filter { it.first > 0 && it.first < originalShortSide }
+                    .sortedByDescending { it.first }
+                    .distinctBy { it.first }
+            }
 
-
-                Row(modifier = Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                compressedge.joshattic.us.ui.components.SelectionChip(
+                    selected = currentShortSide == 0 || currentShortSide == originalShortSide,
+                    onClick = { 
+                        haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                        viewModel.setResolution(0)
+                    }, 
+                    label = stringResource(R.string.original) + " • ${originalShortSide}p"
+                )
+                options.forEach { (res, label) ->
                     compressedge.joshattic.us.ui.components.SelectionChip(
-                        selected = state.targetResolutionHeight == state.originalHeight || state.targetResolutionHeight == 0,
+                        selected = currentShortSide == res,
                         onClick = { 
                             haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                            viewModel.setResolution(originalShortSide)
+                            viewModel.setResolution(res) 
                         }, 
-                        label = stringResource(R.string.original) + " • ${originalShortSide}p"
+                        label = label
                     )
-                    options.forEach { (res, label) ->
-                        compressedge.joshattic.us.ui.components.SelectionChip(
-                            selected = currentShortSide == res,
-                            onClick = { 
-                                haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                                viewModel.setResolution(res) 
-                            }, 
-                            label = label
-                        )
-                    }
                 }
             }
             

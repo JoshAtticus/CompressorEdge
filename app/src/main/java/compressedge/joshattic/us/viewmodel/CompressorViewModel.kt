@@ -440,18 +440,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                 MimeTypes.AUDIO_AAC
             }
 
-            val isVertical = firstItemHeight > firstItemWidth
-            fun getTargetHeight(targetShortSide: Int): Int {
-                if (firstItemWidth <= 0 || firstItemHeight <= 0) return firstItemHeight
-                if (isVertical) {
-                    val targetWidth = minOf(targetShortSide, firstItemWidth)
-                    return (targetWidth.toDouble() * firstItemHeight / firstItemWidth).toInt()
-                } else {
-                    return minOf(targetShortSide, firstItemHeight)
-                }
-            }
-
-            val targetHeight = if (videoConfig.defaultTargetResolutionHeight > 0) getTargetHeight(videoConfig.defaultTargetResolutionHeight) else firstItemHeight
+            val targetHeight = if (videoConfig.defaultTargetResolutionHeight > 0) videoConfig.defaultTargetResolutionHeight else 0
             val targetFpsVal = if (videoConfig.defaultTargetFps > 0 && firstItemFps >= videoConfig.defaultTargetFps) videoConfig.defaultTargetFps else 0
             
             val isBatch = queueItems.size > 1
@@ -544,18 +533,6 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
         }
         
         val current = _uiState.value
-        val isVertical = current.originalHeight > current.originalWidth
-        
-        fun getTargetHeight(targetShortSide: Int): Int {
-            if (current.originalWidth <= 0 || current.originalHeight <= 0) return current.originalHeight
-            
-            if (isVertical) {
-                val targetWidth = minOf(targetShortSide, current.originalWidth)
-                return (targetWidth.toDouble() * current.originalHeight / current.originalWidth).toInt()
-            } else {
-                return minOf(targetShortSide, current.originalHeight)
-            }
-        }
 
         val config = when(preset) {
             QualityPreset.HIGH -> current.highPresetConfig
@@ -565,7 +542,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
         }
 
         if (config != null) {
-            val targetHeight = if (config.resolutionShortSide > 0) getTargetHeight(config.resolutionShortSide) else current.originalHeight
+            val targetHeight = config.resolutionShortSide
             val targetFpsVal = if (config.targetFps > 0 && current.originalFps >= config.targetFps) config.targetFps else 0
             val targetMb = (current.originalSize / (1024.0 * 1024.0) * config.sizeRatio).toFloat().coerceAtLeast(0.1f)
 
@@ -1267,19 +1244,8 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
 
     fun setResolution(height: Int) {
         _uiState.update {
-            val isVertical = it.originalHeight > it.originalWidth
-            val mappedHeight = if (
-                isVertical &&
-                it.originalWidth > 0 &&
-                it.originalHeight > 0 &&
-                height > 0
-            ) {
-                (height.toLong() * it.originalHeight / it.originalWidth).toInt()
-            } else {
-                height
-            }
             it.copy(
-                targetResolutionHeight = mappedHeight,
+                targetResolutionHeight = height,
                 targetResolutionLocked = true,
                 activePreset = QualityPreset.CUSTOM
             )
@@ -1477,7 +1443,10 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
             for ((index, item) in itemsToProcess.withIndex()) {
                 if (!isActive) break
 
-                val plan = withContext(Dispatchers.IO) { buildCompressionPlan(context, currentState, item.uri) }
+                val itemRequestedShortSide = item.targetResolutionHeightOverride ?: currentState.targetResolutionHeight
+                val itemRequestedFps = item.targetFpsOverride ?: currentState.targetFps
+
+                val plan = withContext(Dispatchers.IO) { buildCompressionPlan(context, currentState, item.uri, itemRequestedShortSide, itemRequestedFps) }
                 if (plan.blockingError != null) {
                     _uiState.update { it.copy(error = plan.blockingError, errorLog = null, isCompressing = false) }
                     anyErrors = true
@@ -1503,11 +1472,9 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                     itemAudioBitrate
                 }
                 
-                // For batch mode, we apply overrides.
                 val itemVideoMimeType = plan.outputVideoMimeType
-                // Recompute outputHeight and FPS from overrides
-                val itemOutputHeight = item.targetResolutionHeightOverride ?: plan.outputHeight
-                val itemOutputFps = item.targetFpsOverride ?: plan.outputFps
+                val itemOutputHeight = plan.outputHeight
+                val itemOutputFps = plan.outputFps
                 
                 // Recompute targetBitrate
                 val seconds = item.durationMs / 1000.0
@@ -1533,7 +1500,8 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                     val calculated = if (seconds > 0) (availableVideoBits / seconds).toLong() else 2_000_000L
                     
                     // Min bitrate
-                    val h = if (itemOutputHeight > 0) itemOutputHeight else item.originalHeight
+                    val origShort = if (item.originalWidth > 0 && item.originalHeight > 0) minOf(item.originalWidth, item.originalHeight) else item.originalHeight
+                    val h = if (itemRequestedShortSide > 0 && origShort > 0) minOf(itemRequestedShortSide, origShort) else origShort
                     var base = when {
                         h >= 2160 -> 4_000_000L
                         h >= 1440 -> 2_500_000L
@@ -1673,7 +1641,10 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
         var totalOriginalSize = 0L
 
         for ((index, item) in itemsToProcess.withIndex()) {
-            val plan = withContext(Dispatchers.IO) { buildCompressionPlan(context, currentState, item.uri) }
+            val itemRequestedShortSide = item.targetResolutionHeightOverride ?: currentState.targetResolutionHeight
+            val itemRequestedFps = item.targetFpsOverride ?: currentState.targetFps
+
+            val plan = withContext(Dispatchers.IO) { buildCompressionPlan(context, currentState, item.uri, itemRequestedShortSide, itemRequestedFps) }
             if (plan.blockingError != null) {
                 _uiState.update { it.copy(error = plan.blockingError, errorLog = null, isCompressing = false) }
                 return@launch
@@ -1697,10 +1668,9 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                 itemAudioBitrate
             }
 
-            // For batch mode, we apply overrides.
             val itemVideoMimeType = plan.outputVideoMimeType
-            val itemOutputHeight = item.targetResolutionHeightOverride ?: plan.outputHeight
-            val itemOutputFps = item.targetFpsOverride ?: plan.outputFps
+            val itemOutputHeight = plan.outputHeight
+            val itemOutputFps = plan.outputFps
 
             val seconds = item.durationMs / 1000.0
             val targetSizePct = item.targetSizePercentageOverride ?: currentState.globalTargetSizePercentage
@@ -1724,7 +1694,8 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                 availableVideoBits = availableVideoBits.coerceAtLeast(targetBits * 0.1)
                 val calculated = if (seconds > 0) (availableVideoBits / seconds).toLong() else 2_000_000L
 
-                val h = if (itemOutputHeight > 0) itemOutputHeight else item.originalHeight
+                val origShort = if (item.originalWidth > 0 && item.originalHeight > 0) minOf(item.originalWidth, item.originalHeight) else item.originalHeight
+                val h = if (itemRequestedShortSide > 0 && origShort > 0) minOf(itemRequestedShortSide, origShort) else origShort
                 var base = when {
                     h >= 2160 -> 4_000_000L
                     h >= 1440 -> 2_500_000L
@@ -1907,16 +1878,56 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
         return null
     }
 
-    private fun buildCompressionPlan(context: Context, state: CompressorUiState, inputUri: Uri): CompressionPlan {
+    private fun resolveOutputDimensions(origWidth: Int, origHeight: Int, targetShortSide: Int): Pair<Int, Int> {
+        if (origWidth <= 0 || origHeight <= 0 || targetShortSide <= 0) {
+            var w = origWidth
+            var h = origHeight
+            if (w % 2 != 0 && w > 0) w -= 1
+            if (h % 2 != 0 && h > 0) h -= 1
+            return Pair(w, h)
+        }
+        val isPortrait = origHeight > origWidth
+        val origShort = minOf(origWidth, origHeight)
+        if (targetShortSide >= origShort) {
+            var w = origWidth
+            var h = origHeight
+            if (w % 2 != 0 && w > 0) w -= 1
+            if (h % 2 != 0 && h > 0) h -= 1
+            return Pair(w, h)
+        }
+        
+        return if (isPortrait) {
+            val targetW = targetShortSide
+            var targetH = (targetW.toLong() * origHeight / origWidth).toInt()
+            if (targetH % 2 != 0) targetH -= 1
+            var finalW = targetW
+            if (finalW % 2 != 0) finalW -= 1
+            Pair(finalW, targetH)
+        } else {
+            val targetH = targetShortSide
+            var targetW = (targetH.toLong() * origWidth / origHeight).toInt()
+            if (targetW % 2 != 0) targetW -= 1
+            var finalH = targetH
+            if (finalH % 2 != 0) finalH -= 1
+            Pair(targetW, finalH)
+        }
+    }
+
+    private fun buildCompressionPlan(
+        context: Context,
+        state: CompressorUiState,
+        inputUri: Uri,
+        requestedShortSide: Int = state.targetResolutionHeight,
+        requestedFps: Int = state.targetFps
+    ): CompressionPlan {
         var outputMime = state.videoCodec
-        var outputHeight = state.targetResolutionHeight
-        var outputFps = state.targetFps
+        var outputFps = requestedFps
         val warnings = mutableListOf<String>()
 
         val sourceInfo = getVideoTrackInfo(context, inputUri)
         val sourceMime = sourceInfo?.mimeType ?: state.originalVideoMime
-        val sourceWidth = sourceInfo?.width ?: 0
-        val sourceHeight = sourceInfo?.height ?: 0
+        val sourceWidth = sourceInfo?.width ?: state.originalWidth
+        val sourceHeight = sourceInfo?.height ?: state.originalHeight
         val sourceFps = if ((sourceInfo?.frameRate ?: 0f) > 0f) sourceInfo!!.frameRate else state.originalFps
 
         if (!sourceMime.isNullOrBlank() && sourceWidth > 0 && sourceHeight > 0) {
@@ -1928,9 +1939,10 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                 encoder = false
             )
             if (!decoderSupported) {
+                val (_, initialHeight) = resolveOutputDimensions(sourceWidth, sourceHeight, requestedShortSide)
                 return CompressionPlan(
                     outputVideoMimeType = outputMime,
-                    outputHeight = outputHeight,
+                    outputHeight = initialHeight,
                     outputFps = outputFps,
                     warnings = warnings,
                     blockingError = getApplication<Application>().getString(
@@ -1945,45 +1957,50 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
         }
 
         val attemptedConfigs = mutableListOf<Triple<String, Int, Int>>()
-        fun isCurrentOutputSupported(mime: String, height: Int, fps: Int): Boolean {
-            val safeHeight = if (height > 0) height else state.originalHeight
-            val safeFps = if (fps > 0) fps else state.originalFps.toInt()
-            val aspectRatio = if (state.originalHeight > 0) state.originalWidth.toFloat() / state.originalHeight else 16f / 9f
-            var outputWidth = (safeHeight * aspectRatio).toInt().coerceAtLeast(2)
-            var outputActualHeight = safeHeight.coerceAtLeast(2)
-            if (outputWidth % 2 != 0) outputWidth -= 1
-            if (outputActualHeight % 2 != 0) outputActualHeight -= 1
-            attemptedConfigs.add(Triple(mime, outputActualHeight, safeFps))
+        fun isCurrentOutputSupported(mime: String, outWidth: Int, outHeight: Int, fps: Int): Boolean {
+            val safeWidth = (if (outWidth > 0) outWidth else sourceWidth).coerceAtLeast(2)
+            val safeHeight = (if (outHeight > 0) outHeight else sourceHeight).coerceAtLeast(2)
+            val safeFps = if (fps > 0) fps else sourceFps.toInt()
+            var adjWidth = safeWidth
+            var adjHeight = safeHeight
+            if (adjWidth % 2 != 0) adjWidth -= 1
+            if (adjHeight % 2 != 0) adjHeight -= 1
+            attemptedConfigs.add(Triple(mime, minOf(adjWidth, adjHeight), safeFps))
             return isCodecConfigurationSupported(
                 mimeType = mime,
-                width = outputWidth,
-                height = outputActualHeight,
+                width = adjWidth,
+                height = adjHeight,
                 fps = safeFps.toFloat(),
                 encoder = true
             )
         }
 
-        if (!isCurrentOutputSupported(outputMime, outputHeight, outputFps)) {
-            if (outputMime != MimeTypes.VIDEO_H264 && isCurrentOutputSupported(MimeTypes.VIDEO_H264, outputHeight, outputFps)) {
+        var (currentOutputWidth, currentOutputHeight) = resolveOutputDimensions(sourceWidth, sourceHeight, requestedShortSide)
+
+        if (!isCurrentOutputSupported(outputMime, currentOutputWidth, currentOutputHeight, outputFps)) {
+            if (outputMime != MimeTypes.VIDEO_H264 && isCurrentOutputSupported(MimeTypes.VIDEO_H264, currentOutputWidth, currentOutputHeight, outputFps)) {
                 outputMime = MimeTypes.VIDEO_H264
                 warnings.add(getApplication<Application>().getString(R.string.warning_codec_fallback_h264))
             } else {
-                val fallbackHeights = listOf(1080, 720, 540, 480)
-                    .filter { it in 2..state.originalHeight }
-                    .ifEmpty { listOf(state.originalHeight.coerceAtLeast(2)) }
+                val origShort = if (sourceWidth > 0 && sourceHeight > 0) minOf(sourceWidth, sourceHeight) else sourceHeight
+                val fallbackShortSides = listOf(1080, 720, 540, 480, 360, 240)
+                    .filter { it in 2..origShort }
+                    .ifEmpty { listOf(origShort.coerceAtLeast(2)) }
                 val fallbackFps = listOf(30, 24)
                 var supported = false
 
-                for (heightCandidate in fallbackHeights) {
+                for (shortCandidate in fallbackShortSides) {
+                    val (candWidth, candHeight) = resolveOutputDimensions(sourceWidth, sourceHeight, shortCandidate)
                     for (fpsCandidate in fallbackFps) {
-                        if (isCurrentOutputSupported(MimeTypes.VIDEO_H264, heightCandidate, fpsCandidate)) {
+                        if (isCurrentOutputSupported(MimeTypes.VIDEO_H264, candWidth, candHeight, fpsCandidate)) {
                             outputMime = MimeTypes.VIDEO_H264
-                            outputHeight = heightCandidate
+                            currentOutputWidth = candWidth
+                            currentOutputHeight = candHeight
                             outputFps = fpsCandidate
                             warnings.add(
                                 getApplication<Application>().getString(
                                     R.string.warning_quality_fallback,
-                                    outputHeight,
+                                    minOf(candWidth, candHeight),
                                     outputFps
                                 )
                             )
@@ -1999,7 +2016,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                         .joinToString(separator = ", ") { "${it.first.substringAfter("/")} ${it.second}p@${it.third}fps" }
                     return CompressionPlan(
                         outputVideoMimeType = outputMime,
-                        outputHeight = outputHeight,
+                        outputHeight = currentOutputHeight,
                         outputFps = outputFps,
                         warnings = warnings,
                         blockingError = getApplication<Application>().getString(
@@ -2013,7 +2030,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
 
         return CompressionPlan(
             outputVideoMimeType = outputMime,
-            outputHeight = outputHeight,
+            outputHeight = currentOutputHeight,
             outputFps = outputFps,
             warnings = warnings,
             blockingError = null

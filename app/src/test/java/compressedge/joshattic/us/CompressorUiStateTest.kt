@@ -145,16 +145,16 @@ class CompressorUiStateTest {
             originalHeight = 1920,
             originalFps = 60f,
             durationMs = 60_000L,
-            targetResolutionHeight = 1920,
+            targetResolutionHeight = 1080,
             audioBitrate = 128_000
         )
 
-        val targetAt720 = initialState.copy(targetResolutionHeight = 1280, targetFps = 30).minimumSizeMb
+        val targetAt720 = initialState.copy(targetResolutionHeight = 720, targetFps = 30).minimumSizeMb
         val targetAt1080 = initialState.copy(targetFps = 30).minimumSizeMb
         val targetMb = (targetAt720 + targetAt1080) / 2f
         val adjustedState = initialState.autoAdjust(targetMb)
 
-        assertEquals("720p portrait should use a 1280px height", 1280, adjustedState.targetResolutionHeight)
+        assertEquals("720p portrait should use a 720 short-side", 720, adjustedState.targetResolutionHeight)
     }
 
     @Test
@@ -164,17 +164,17 @@ class CompressorUiStateTest {
             originalHeight = 1920,
             originalFps = 60f,
             durationMs = 60_000L,
-            targetResolutionHeight = 1920,
+            targetResolutionHeight = 1080,
             audioBitrate = 128_000
         )
 
         val smallTarget = initialState
-            .copy(targetResolutionHeight = 1280, targetFps = 30)
-            .minimumSizeMb - 1f
+            .copy(targetResolutionHeight = 480, targetFps = 30)
+            .minimumSizeMb
         val reduced = initialState.autoAdjust(smallTarget)
 
         assertTrue(reduced.targetFps in 1..30)
-        assertTrue(reduced.targetResolutionHeight in 1 until 1280)
+        assertTrue(reduced.targetResolutionHeight in 1..720)
 
         val targetAt1080p60 = initialState.copy(targetFps = 0).minimumSizeMb
         val largeTarget = targetAt1080p60 + 1f

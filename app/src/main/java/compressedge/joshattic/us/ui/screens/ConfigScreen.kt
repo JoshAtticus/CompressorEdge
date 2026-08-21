@@ -76,9 +76,7 @@ fun ConfigScreen(
     val haptics = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
 
-    val originalMb = state.originalSize / (1024f * 1024f)
-    val actualEst = maxOf(state.targetSizeMb, state.minimumSizeMb)
-    val isLarger = originalMb > 0 && actualEst > (originalMb + 0.01f)
+    val canStart = if (state.isBatchMode) state.queue.isNotEmpty() && !state.isCompressing else state.selectedUri != null && !state.isCompressing
     
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize()
@@ -185,7 +183,7 @@ fun ConfigScreen(
                                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                                     onStartCompression()
                                 },
-                                enabled = !isLarger,
+                                enabled = canStart,
                                 interactionSource = interactionSource,
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -324,7 +322,7 @@ fun ConfigScreen(
                                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                                 onStartCompression()
                             },
-                            enabled = !isLarger,
+                            enabled = canStart,
                             interactionSource = interactionSource,
                             modifier = Modifier
                                 .widthIn(max = 600.dp)
