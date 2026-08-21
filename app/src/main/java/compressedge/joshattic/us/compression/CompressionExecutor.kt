@@ -24,7 +24,7 @@ import androidx.media3.transformer.EditedMediaItemSequence
 import androidx.media3.transformer.Effects
 import androidx.media3.transformer.ExportException
 import androidx.media3.transformer.ExportResult
-import androidx.media3.transformer.InAppMuxer
+import androidx.media3.transformer.DefaultMuxer
 import androidx.media3.transformer.Transformer
 import androidx.media3.transformer.VideoEncoderSettings
 import compressedge.joshattic.us.R
@@ -109,11 +109,17 @@ object CompressionExecutor {
         val fallbackEncoderFactory = if (isMediaTek) cbrEncoderFactory else vbrEncoderFactory
 
         val encoderFactory = object : Codec.EncoderFactory {
-            override fun createForAudioEncoding(format: androidx.media3.common.Format): Codec {
-                return primaryEncoderFactory.createForAudioEncoding(format)
+            override fun createForAudioEncoding(
+                format: androidx.media3.common.Format,
+                logSessionId: android.media.metrics.LogSessionId?
+            ): Codec {
+                return primaryEncoderFactory.createForAudioEncoding(format, logSessionId)
             }
 
-            override fun createForVideoEncoding(format: androidx.media3.common.Format): Codec {
+            override fun createForVideoEncoding(
+                format: androidx.media3.common.Format,
+                logSessionId: android.media.metrics.LogSessionId?
+            ): Codec {
                 val targetFps = if (params.outputFps > 0) params.outputFps.toFloat() else params.originalFps
                 var modifiedFormatBuilder = format.buildUpon()
                 if (targetFps > 0f) {
@@ -125,9 +131,9 @@ object CompressionExecutor {
                 val modifiedFormat = modifiedFormatBuilder.build()
 
                 return try {
-                    primaryEncoderFactory.createForVideoEncoding(modifiedFormat)
+                    primaryEncoderFactory.createForVideoEncoding(modifiedFormat, logSessionId)
                 } catch (e: Exception) {
-                    fallbackEncoderFactory.createForVideoEncoding(modifiedFormat)
+                    fallbackEncoderFactory.createForVideoEncoding(modifiedFormat, logSessionId)
                 }
             }
 
@@ -146,10 +152,10 @@ object CompressionExecutor {
             .setAudioMimeType(audioMimeType)
             .apply {
                 if (audioMimeType == MimeTypes.AUDIO_OPUS) {
-                    setMuxerFactory(InAppMuxer.Factory.Builder().build())
+                    setMuxerFactory(DefaultMuxer.Factory())
                 }
             }
-            .setAssetLoaderFactory(DefaultAssetLoaderFactory(context, decoderFactory, Clock.DEFAULT))
+            .setAssetLoaderFactory(DefaultAssetLoaderFactory(context, decoderFactory, Clock.DEFAULT, android.media.metrics.LogSessionId.LOG_SESSION_ID_NONE))
             .setEncoderFactory(encoderFactory)
             .addListener(object : Transformer.Listener {
                 override fun onCompleted(composition: Composition, exportResult: ExportResult) {
@@ -210,7 +216,7 @@ object CompressionExecutor {
         }
 
         val composition = Composition.Builder(
-            listOf(EditedMediaItemSequence(editedMediaItem))
+            listOf(EditedMediaItemSequence.withAudioAndVideoFrom(listOf(editedMediaItem)))
         )
             .setHdrMode(hdrMode)
             .build()

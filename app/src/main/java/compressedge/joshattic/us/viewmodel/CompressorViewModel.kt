@@ -917,6 +917,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
             put("targetFps", config.targetFps)
             put("sizeRatio", config.sizeRatio.toDouble())
             put("audioBitrate", config.audioBitrate)
+            if (config.label != null) put("label", config.label) else put("label", JSONObject.NULL)
         }
         prefs.edit().putString(key, obj.toString()).apply()
     }
@@ -929,7 +930,11 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                 resolutionShortSide = obj.getInt("resolutionShortSide"),
                 targetFps = obj.getInt("targetFps"),
                 sizeRatio = obj.getDouble("sizeRatio").toFloat(),
-                audioBitrate = obj.getInt("audioBitrate")
+                audioBitrate = obj.getInt("audioBitrate"),
+                label = when {
+                    !obj.has("label") || obj.isNull("label") -> null
+                    else -> obj.optString("label", "").takeIf { it.isNotBlank() }
+                }
             )
         } catch (e: Exception) {
             try {
@@ -938,7 +943,8 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                     resolutionShortSide = parts[0].toInt(),
                     targetFps = parts[1].toInt(),
                     sizeRatio = parts[2].toFloat(),
-                    audioBitrate = parts[3].toInt()
+                    audioBitrate = parts[3].toInt(),
+                    label = null
                 )
             } catch (ex: Exception) {
                 default
@@ -963,7 +969,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
     private fun loadTargetSizePresets(): List<compressedge.joshattic.us.model.TargetSizePreset> {
         val str = prefs.getString("target_size_presets", null) ?: return compressedge.joshattic.us.model.defaultTargetSizePresets.sortedBy { it.sizeMb }
         return try {
-            if (str.startsWith("[")) {
+            val parsedList = if (str.startsWith("[")) {
                 val array = JSONArray(str)
                 val list = mutableListOf<compressedge.joshattic.us.model.TargetSizePreset>()
                 for (i in 0 until array.length()) {
@@ -977,7 +983,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                         )
                     )
                 }
-                list.ifEmpty { compressedge.joshattic.us.model.defaultTargetSizePresets }.sortedBy { it.sizeMb }
+                list
             } else {
                 // Legacy split parser fallback
                 str.split(";\n", ";").mapNotNull { itemStr ->
@@ -990,7 +996,76 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
                             isCustom = parts[3].trim().toBoolean()
                         )
                     } else null
-                }.ifEmpty { compressedge.joshattic.us.model.defaultTargetSizePresets }.sortedBy { it.sizeMb }
+                }
+            }
+
+            if (parsedList.isEmpty()) {
+                compressedge.joshattic.us.model.defaultTargetSizePresets.sortedBy { it.sizeMb }
+            } else {
+                var needsSave = false
+                val migrated = parsedList.map { preset ->
+                    if (preset.id == "discord" && !preset.isCustom && preset.sizeMb == 10f) {
+                        needsSave = true
+                        preset.copy(sizeMb = 20f, label = "Discord")
+                    } else {
+                        preset
+                    }
+                }.toMutableList()
+
+                if (migrated.none { it.id == "github" }) {
+                    migrated.add(compressedge.joshattic.us.model.TargetSizePreset("github", 10f, "GitHub", isCustom = false))
+                    needsSave = true
+                }
+
+                // Fix duplicate GitHub: discord was previously not renamable, so any
+                // stored custom label for discord that equals "GitHub" is likely an
+                // accidental rename that was previously invisible and now shows as duplicate.
+                // Reset such cases to default.
+                for (i in migrated.indices) {
+                    val p = migrated[i]
+                    if (p.id == "discord" && !p.isCustom) {
+                        val labelLower = p.label.trim().lowercase()
+                        if (labelLower == "github" || (labelLower.contains("github") && labelLower.contains("discord"))) {
+                            migrated[i] = p.copy(label = "Discord")
+                            needsSave = true
+                        }
+                    }
+                }
+
+                // Deduplicate by id (keep first occurrence)
+                val seenIds = mutableSetOf<String>()
+                val dedupedById = mutableListOf<compressedge.joshattic.us.model.TargetSizePreset>()
+                for (preset in migrated) {
+                    if (seenIds.add(preset.id)) {
+                        dedupedById.add(preset)
+                    } else {
+                        needsSave = true
+                    }
+                }
+
+                // Remove custom presets that duplicate a default preset's size+label
+                // e.g., user previously added a custom 10MB "GitHub" before the default existed
+                val defaultKeys = compressedge.joshattic.us.model.defaultTargetSizePresets
+                    .associateBy { it.sizeMb to it.label.lowercase() }
+                val nonCustomKeys = dedupedById.filter { !it.isCustom }
+                    .associateBy { it.sizeMb to it.label.lowercase() }
+                val finalList = mutableListOf<compressedge.joshattic.us.model.TargetSizePreset>()
+                for (preset in dedupedById) {
+                    if (preset.isCustom) {
+                        val key = preset.sizeMb to preset.label.trim().lowercase()
+                        if (key in nonCustomKeys || key in defaultKeys) {
+                            needsSave = true
+                            continue
+                        }
+                    }
+                    finalList.add(preset)
+                }
+
+                val result = finalList.sortedBy { it.sizeMb }
+                if (needsSave || result.size != migrated.size) {
+                    saveTargetSizePresets(result)
+                }
+                result
             }
         } catch (e: Exception) {
             compressedge.joshattic.us.model.defaultTargetSizePresets.sortedBy { it.sizeMb }

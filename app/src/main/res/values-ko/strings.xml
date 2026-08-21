@@ -97,7 +97,8 @@
     <string name="warning_quality_fallback">이 기기는 선택한 설정을 인코딩할 수 없습니다. %1$dp 및 %2$dfps의 H.264로 대체합니다.</string>
 
 
-    <string name="size_discord">Discord • GitHub</string>
+    <string name="size_discord">Discord</string>
+    <string name="size_github">GitHub</string>
     <string name="size_email">이메일</string>
     <string name="size_stories">Stories • Nitro Basic</string>
     <string name="size_messenger">Messenger • BlueSky</string>
@@ -283,5 +284,5 @@
     <string name="whats_new_3_title">UI 개선</string>
     <string name="whats_new_3_desc">UI의 다양한 부분이 수정되고 세련되게 다듬어졌습니다.</string>
     <string name="whats_new_4_title">버그 수정</string>
-    <string name="whats_new_4_desc">설정의 다양한 버그가 수정되었습니다. 또한, 단일 인스턴스로 실행되어 최근 앱 목록을 가득 채우지 않습니다!</string>
+    <string name="whats_new_4_desc">다양한 버그와 문제가 수정되었습니다</string>
 </resources>
