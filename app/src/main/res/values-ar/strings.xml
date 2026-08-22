@@ -283,10 +283,10 @@
     <string name="whats_new_button">فهمت</string>
     <string name="whats_new_1_title">ضغط الدفعات</string>
     <string name="whats_new_1_desc">يمكنك الآن تحديد مقاطع فيديو متعددة في وقت واحد لضغطها دفعة واحدة! قم بتكوينها جميعًا معًا بسهولة أو تعديل كل فيديو على حدة.</string>
-    <string name="whats_new_2_title">خوارزمية الضبط التلقائي المحسنة</string>
-    <string name="whats_new_2_desc">تعديلات الإعدادات التلقائية تعمل الآن بشكل أفضل، الإعدادات التي تغيرها تصبح ثابتة وسترى تحذيراً إذا كان الحجم المستهدف غير ممكن</string>
-    <string name="whats_new_3_title">تحسينات واجهة المستخدم</string>
-    <string name="whats_new_3_desc">تم إصلاح وتحسين أجزاء مختلفة من واجهة المستخدم</string>
-    <string name="whats_new_4_title">إصلاح الأخطاء</string>
-    <string name="whats_new_4_desc">تم إصلاح أخطاء متنوعة في الإعدادات + Compressor Edge الآن يعمل بنسخة واحدة، فلا مزيد من ملء قائمة التطبيقات الأخيرة!</string>
+    <string name="whats_new_2_title">إعدادات مسبقة جديدة وتحديث المحرك الأساسي</string>
+    <string name="whats_new_2_desc">تم تحديث الإعدادات المسبقة المدمجة (مثل Discord 20MB) وترقية محرك Media3 الأساسي إلى أحدث إصدار.</string>
+    <string name="whats_new_3_title">شريط تمرير الحجم المستهدف المحسن</string>
+    <string name="whats_new_3_desc">تم تحسين شريط تمرير الحجم المستهدف لتسهيل تحديد الحجم المطلوب بدقة.</string>
+    <string name="whats_new_4_title">إصلاح الأخطاء وتحسينات الواجهة</string>
+    <string name="whats_new_4_desc">تم إصلاح خيارات دقة قائمة الانتظار، والانتقال التدريجي للصور المصغرة، والتحقق من زر البدء، والعديد من مشاكل الاستقرار.</string>
 </resources>

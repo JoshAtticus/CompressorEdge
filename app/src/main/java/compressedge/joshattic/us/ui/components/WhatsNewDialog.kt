@@ -135,6 +135,27 @@ fun WhatsNewDialog(
                             title = stringResource(R.string.whats_new_1_title),
                             description = stringResource(R.string.whats_new_1_desc)
                         )
+                        WhatsNewItem(
+                            icon = Icons.Default.Tune,
+                            bgColor = if (isDark) Color(0xFF1B4D3E) else Color(0xFFE8F5E9),
+                            iconTint = if (isDark) Color(0xFF81C784) else Color(0xFF2E7D32),
+                            title = stringResource(R.string.whats_new_2_title),
+                            description = stringResource(R.string.whats_new_2_desc)
+                        )
+                        WhatsNewItem(
+                            icon = Icons.Default.Build,
+                            bgColor = if (isDark) Color(0xFF352B4E) else Color(0xFFF3E5F5),
+                            iconTint = if (isDark) Color(0xFFD0BCFF) else Color(0xFF7E57C2),
+                            title = stringResource(R.string.whats_new_3_title),
+                            description = stringResource(R.string.whats_new_3_desc)
+                        )
+                        WhatsNewItem(
+                            icon = Icons.Default.BugReport,
+                            bgColor = if (isDark) Color(0xFF4E3820) else Color(0xFFFFF3E0),
+                            iconTint = if (isDark) Color(0xFFFFB74D) else Color(0xFFEF6C00),
+                            title = stringResource(R.string.whats_new_4_title),
+                            description = stringResource(R.string.whats_new_4_desc)
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))

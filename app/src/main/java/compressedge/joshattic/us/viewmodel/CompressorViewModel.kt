@@ -1786,7 +1786,7 @@ class CompressorViewModel(application: Application) : AndroidViewModel(applicati
             BackgroundCompressionManager.state.collect { bg ->
                 when {
                     bg.completed && bg.compressedUri != null -> {
-                        val savedBytes = currentState.originalSize - bg.compressedSize
+                        val savedBytes = currentState.totalOriginalSizeBatch - bg.compressedSize
                         var newTotal = _uiState.value.totalSavedBytes
                         if (savedBytes > 0) {
                             newTotal += savedBytes

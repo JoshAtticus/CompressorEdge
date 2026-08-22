@@ -279,10 +279,10 @@
     <string name="whats_new_button">확인</string>
     <string name="whats_new_1_title">일괄 압축</string>
     <string name="whats_new_1_desc">이제 여러 동영상을 한 번에 선택하여 일괄 압축할 수 있습니다! 모든 동영상을 함께 손쉽게 설정하거나 각 동영상을 개별적으로 조정해 보세요.</string>
-    <string name="whats_new_2_title">자동 조정 알고리즘 개선</string>
-    <string name="whats_new_2_desc">자동 설정 조정 기능이 더욱 향상되었습니다. 변경한 설정은 고정되며, 목표 크기가 불가능할 경우 경고가 표시됩니다.</string>
-    <string name="whats_new_3_title">UI 개선</string>
-    <string name="whats_new_3_desc">UI의 다양한 부분이 수정되고 세련되게 다듬어졌습니다.</string>
-    <string name="whats_new_4_title">버그 수정</string>
-    <string name="whats_new_4_desc">다양한 버그와 문제가 수정되었습니다</string>
+    <string name="whats_new_2_title">새로운 프리셋 및 코어 업데이트</string>
+    <string name="whats_new_2_desc">플랫폼 변경 사항(예: Discord 20MB)에 맞춰 기본 프리셋이 업데이트되었으며 핵심 Media3 엔진이 최신 버전으로 업그레이드되었습니다.</string>
+    <string name="whats_new_3_title">목표 크기 슬라이더 개선</string>
+    <string name="whats_new_3_desc">원하는 크기를 더 쉽게 선택할 수 있도록 목표 크기 슬라이더가 개선되었습니다.</string>
+    <string name="whats_new_4_title">버그 수정 및 UI 개선</string>
+    <string name="whats_new_4_desc">대기열 해상도 선택, 썸네일 페이드 전환, 시작 버튼 유효성 검사 및 다양한 안정성 문제가 해결되었습니다.</string>
 </resources>

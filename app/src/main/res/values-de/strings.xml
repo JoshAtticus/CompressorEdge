@@ -277,15 +277,16 @@
     <string name="reset_audio_defaults">Audio-Standards zurücksetzen</string>
 
     <!-- What's New Dialog -->
+    <!-- What's New Dialog -->
     <string name="whats_new_title">Was gibt\'s Neues in Compressor Edge</string>
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Verstanden</string>
     <string name="whats_new_1_title">Stapelkomprimierung</string>
     <string name="whats_new_1_desc">Sie können jetzt mehrere Videos gleichzeitig auswählen, um sie stapelweise zu komprimieren! Konfigurieren Sie alle gemeinsam oder passen Sie jedes Video individuell an.</string>
-    <string name="whats_new_2_title">Verbesserter Auto-Adjust-Algorithmus</string>
-    <string name="whats_new_2_desc">Automatische Einstellungen funktionieren jetzt noch besser. Geänderte Einstellungen werden beibehalten, und Sie erhalten eine Warnung, wenn die Zielgröße nicht möglich ist.</string>
-    <string name="whats_new_3_title">UI-Verfeinerungen</string>
-    <string name="whats_new_3_desc">Verschiedene Teile der Benutzeroberfläche wurden korrigiert und verfeinert.</string>
-    <string name="whats_new_4_title">Fehlerbehebungen</string>
-    <string name="whats_new_4_desc">Verschiedene Fehler in den Einstellungen wurden behoben + Compressor Edge läuft jetzt als einzelne Instanz, also kein Überfüllen der letzten Apps mehr!</string>
+    <string name="whats_new_2_title">Neue Voreinstellungen &amp; Core-Update</string>
+    <string name="whats_new_2_desc">Integrierte Voreinstellungen wurden aktualisiert (z. B. Discord 20MB) und die Media3-Core-Engine wurde auf die neueste Version aktualisiert.</string>
+    <string name="whats_new_3_title">Verbesserter Zielgrößen-Schieberegler</string>
+    <string name="whats_new_3_desc">Der Schieberegler für die Zielgröße wurde verbessert, damit Sie Ihre gewünschte Größe einfacher auswählen können.</string>
+    <string name="whats_new_4_title">Fehlerbehebungen &amp; UI-Feinschliff</string>
+    <string name="whats_new_4_desc">Korrekturen an den Auflösungsoptionen der Warteschlange, Miniaturbild-Überblendung, Validierung der Start-Schaltfläche und Stabilitätsverbesserungen.</string>
 </resources>

@@ -283,10 +283,10 @@
     <string name="whats_new_button">Entendi</string>
     <string name="whats_new_1_title">Compressão em lote</string>
     <string name="whats_new_1_desc">Agora você pode selecionar vários vídeos de uma vez para comprimi-los em lote! Configure todos juntos facilmente ou ajuste cada vídeo individualmente.</string>
-    <string name="whats_new_2_title">Algoritmo de autoajuste melhorado</string>
-    <string name="whats_new_2_desc">Os ajustes automáticos agora funcionam ainda melhor; as alterações que você fizer serão mantidas e você verá um aviso se o tamanho alvo não for possível.</string>
-    <string name="whats_new_3_title">Refinamentos de UI</string>
-    <string name="whats_new_3_desc">Várias partes da interface foram corrigidas e refinadas.</string>
-    <string name="whats_new_4_title">Correção de bugs</string>
-    <string name="whats_new_4_desc">Vários bugs nas configurações foram corrigidos + o Compressor Edge agora é instância única, chega de lotar seus apps recentes!</string>
+    <string name="whats_new_2_title">Novas predefinições e núcleo atualizado</string>
+    <string name="whats_new_2_desc">As predefinições integradas foram atualizadas (como Discord 20MB) e o motor Media3 principal foi atualizado para a versão mais recente.</string>
+    <string name="whats_new_3_title">Controle deslizante de tamanho aprimorado</string>
+    <string name="whats_new_3_desc">O controle deslizante de tamanho alvo foi aprimorado para facilitar a seleção do tamanho desejado.</string>
+    <string name="whats_new_4_title">Correção de bugs e refinamentos de UI</string>
+    <string name="whats_new_4_desc">Correções nas opções de resolução da fila, transição de fade nas miniaturas, validação do botão iniciar e melhorias de estabilidade.</string>
 </resources>

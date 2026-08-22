@@ -285,10 +285,10 @@
     <string name="whats_new_button">知道了</string>
     <string name="whats_new_1_title">批次壓縮</string>
     <string name="whats_new_1_desc">現在您可以一次選擇多個影片進行批次壓縮！輕鬆統一配置所有影片，或單獨微調每個影片。</string>
-    <string name="whats_new_2_title">改進的自動調整演算法</string>
-    <string name="whats_new_2_desc">自動設定調整現在效果更佳，您更改的設定將被鎖定，如果目標大小無法實現，您將看到警告。</string>
-    <string name="whats_new_3_title">UI 細節優化</string>
-    <string name="whats_new_3_desc">修復並優化了 UI 的多個部分。</string>
-    <string name="whats_new_4_title">Bug 修復</string>
-    <string name="whats_new_4_desc">修復了設定中的多項 Bug + Compressor Edge 現在採用單實例運行，不再占用您的最近任務列表！</string>
+    <string name="whats_new_2_title">新預設與核心更新</string>
+    <string name="whats_new_2_desc">內建預設已更新以反映平台變化（如 Discord 20MB），核心 Media3 引擎已升級至最新版本。</string>
+    <string name="whats_new_3_title">改進的目標尺寸滑塊</string>
+    <string name="whats_new_3_desc">目標尺寸滑塊已改進，使選擇您真正想要的尺寸更加容易。</string>
+    <string name="whats_new_4_title">錯誤修復與 UI 優化</string>
+    <string name="whats_new_4_desc">修復了批次隊列解析度選項、縮圖淡入淡出過渡、啟動按鈕驗證及多項介面問題。</string>
 </resources>

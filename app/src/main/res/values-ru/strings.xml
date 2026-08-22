@@ -285,10 +285,10 @@
     <string name="whats_new_button">Понятно</string>
     <string name="whats_new_1_title">Пакетное сжатие</string>
     <string name="whats_new_1_desc">Теперь вы можете выбрать несколько видео одновременно для пакетного сжатия! Легко настраивайте их все вместе или редактируйте параметры каждого видео отдельно.</string>
-    <string name="whats_new_2_title">Улучшенный алгоритм автоподбора</string>
-    <string name="whats_new_2_desc">Автоматическая настройка стала еще точнее. Измененные параметры фиксируются, а если целевой размер недостижим, появится предупреждение.</string>
-    <string name="whats_new_3_title">Улучшения интерфейса</string>
-    <string name="whats_new_3_desc">Различные элементы интерфейса были исправлены и доработаны.</string>
-    <string name="whats_new_4_title">Исправления ошибок</string>
-    <string name="whats_new_4_desc">Исправлены ошибки в настройках + Compressor Edge теперь работает в одном экземпляре, больше не засоряя список недавних приложений!</string>
+    <string name="whats_new_2_title">Новые пресеты и обновленное ядро</string>
+    <string name="whats_new_2_desc">Встроенные пресеты были обновлены (например, Discord 20MB), а основной движок Media3 обновлен до последней версии.</string>
+    <string name="whats_new_3_title">Улучшенный ползунок целевого размера</string>
+    <string name="whats_new_3_desc">Ползунок целевого размера был улучшен, чтобы было проще выбрать нужный размер.</string>
+    <string name="whats_new_4_title">Исправления ошибок и полировка интерфейса</string>
+    <string name="whats_new_4_desc">Исправлен выбор разрешения в очереди, плавное затухание миниатюр, проверка кнопки запуска и различные проблемы стабильности.</string>
 </resources>

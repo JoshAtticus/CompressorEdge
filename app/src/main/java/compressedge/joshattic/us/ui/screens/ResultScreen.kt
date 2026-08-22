@@ -112,7 +112,8 @@ fun ResultScreen(
             textAlign = TextAlign.Center
         )
         
-        val reduction = if (state.originalSize > 0) ((state.originalSize - state.compressedSize).toFloat() / state.originalSize * 100).toInt() else 0
+        val origSize = state.totalOriginalSizeBatch
+        val reduction = if (origSize > 0) ((origSize - state.compressedSize).toFloat() / origSize * 100).toInt() else 0
         if (reduction > 0) {
             Text(
                 "(-$reduction%)",

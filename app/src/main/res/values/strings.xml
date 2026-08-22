@@ -287,11 +287,11 @@
     <string name="whats_new_version">%1$s</string>
     <string name="whats_new_button">Got it</string>
     <string name="whats_new_1_title">Batch Compression</string>
-    <string name="whats_new_1_desc">You can now select multiple videos at once to compress them in batch! Easily configure them all together or tweak each video individually.</string>
-    <string name="whats_new_2_title">Improved Auto-Adjust Algorithm</string>
-    <string name="whats_new_2_desc">Automatic settings adjustments now work even better, settings you change are locked in and you\'ll see a warning if your target size isn\'t possible</string>
-    <string name="whats_new_3_title">UI Refinements</string>
-    <string name="whats_new_3_desc">Various parts of the UI have been fixed &amp; refined</string>
-    <string name="whats_new_4_title">Bug Fixes</string>
-    <string name="whats_new_4_desc">Various bugs in settings have been fixed + Compressor Edge is now single instance, so no more filling up your recents!</string>
+    <string name="whats_new_1_desc">Select multiple videos to compress them in batch! Easily configure them all together or tweak each video individually.</string>
+    <string name="whats_new_2_title">New Presets &amp; Updated Core</string>
+    <string name="whats_new_2_desc">Built-in presets have been updated to reflect platform changes (like Discord 20MB) and core Media3 components are updated to the latest version.</string>
+    <string name="whats_new_3_title">Improved Target Size Slider</string>
+    <string name="whats_new_3_desc">The target size slider has been improved to make it easier to select the size you actually want.</string>
+    <string name="whats_new_4_title">Bug Fixes &amp; UI Polish</string>
+    <string name="whats_new_4_desc">Fixed batch queue resolution options, thumbnail fade transitions, start button validation, and various UI issues.</string>
 </resources>

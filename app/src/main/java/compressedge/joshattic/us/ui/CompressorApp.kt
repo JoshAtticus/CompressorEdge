@@ -418,7 +418,7 @@ fun CompressorApp(viewModel: CompressorViewModel) {
                                                 onBack = { viewModel.reset() },
                                                 onSaveAnyway = { /* No-op for actual errors */ }
                                             )
-                                        } else if (state.compressedSize > state.originalSize && !forceShowResult) {
+                                        } else if (state.compressedSize > state.totalOriginalSizeBatch && !forceShowResult) {
                                             CompressionFailedScreen(
                                                 state = state,
                                                 onBack = { viewModel.reset() },
